@@ -1,5 +1,8 @@
 package com.company.project.common.utils;
 
+import com.company.project.common.exception.BusinessException;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Twitter_Snowflake<br>
  * SnowFlake的结构如下(每部分用-分开):<br>
@@ -12,6 +15,7 @@ package com.company.project.common.utils;
  * 加起来刚好64位，为一个Long型。<br>
  * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。
  */
+@Slf4j
 public class SnowflakeIdWorker {
 
     // ==============================Fields===========================================
@@ -116,7 +120,8 @@ public class SnowflakeIdWorker {
 
         //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
         if (timestamp < lastTimestamp) {
-            throw new RuntimeException(
+
+            throw new BusinessException(
                     String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
 
@@ -174,10 +179,9 @@ public class SnowflakeIdWorker {
      */
     public static void main(String[] args) {
         SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             long id = idWorker.nextId();
-            System.out.println(Long.toBinaryString(id));
-            System.out.println(id);
+            log.info(String.valueOf(id));
         }
     }
 }
