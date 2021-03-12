@@ -1,5 +1,6 @@
 package com.company.project.common.utils;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.ColumnEntity;
 import com.company.project.entity.TableEntity;
@@ -116,12 +117,11 @@ public class GenUtils {
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        map.put("identity", idWorker.nextId());
-        map.put("addId", idWorker.nextId());
-        map.put("updateId", idWorker.nextId());
-        map.put("deleteId", idWorker.nextId());
-        map.put("selectId", idWorker.nextId());
+        map.put("identity", IdWorker.getId());
+        map.put("addId", IdWorker.getId());
+        map.put("updateId", IdWorker.getId());
+        map.put("deleteId", IdWorker.getId());
+        map.put("selectId", IdWorker.getId());
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
