@@ -145,4 +145,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 > github图片可能无法正常显示， 请尝试去[gitee](https://gitee.com/zwens/springboot-manager)查看
 > 加群二维码仅工作日开放， 周末不开放， 如果着急，请使用其他方式联系作者
 
-<img width="300px" height="400px" src="https://images.gitee.com/uploads/images/2021/0419/174750_610e4284_997722.jpeg" alt="" style="zoom:25%;" /> 
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0506/181607_8c0b7b3d_997722.jpeg "微信图片_20210506180757.jpg")
