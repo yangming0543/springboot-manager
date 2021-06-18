@@ -131,15 +131,18 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 2. 新建 feature_xxx 分支
 3. 提交代码
 4. 提交 Pull Request
-	
+	  
 ## **效果图**
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/142027_57d18746_997722.png "home1.png")
 ![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
 
 ### 捐赠
-> 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！
+> 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
+
 ![image-20200506154143271](https://images.gitee.com/uploads/images/2020/0521/110630_6be55411_997722.png)
 ### 交流群
-> github图片可能无法正常显示， 请尝试去[gitee](https://gitee.com/zwens/springboot-manager)查看
+> github图片可能无法正常显示， 请尝试去[gitee](https://gitee.com/zwens/springboot-manager)查看  
+备注开源  
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0618/162418_7d50cae5_997722.png "微信截图_20210618162313.png")
 
