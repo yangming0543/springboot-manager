@@ -140,5 +140,8 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
 
 ![image-20200506154143271](https://images.gitee.com/uploads/images/2020/0521/110630_6be55411_997722.png)
- 
+
+### 交流群
+> 如果大家有疑难杂症，技术交流， 可以加我拉你们进群
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0812/150806_71de8e62_997722.jpeg "微信图片_20210812150638.jpg")
 
