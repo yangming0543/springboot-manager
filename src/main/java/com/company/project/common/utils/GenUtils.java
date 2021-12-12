@@ -153,7 +153,9 @@ public class GenUtils {
         StringBuilder sbuilder = new StringBuilder(fields[0]);
         for (int i = 1; i < fields.length; i++) {
             char[] cs = fields[i].toCharArray();
-            cs[0] -= 32;
+             if(cs[0]>='a') {
+                cs[0] -= 32;
+            }
             sbuilder.append(String.valueOf(cs));
         }
         return sbuilder.toString().substring(0, 1).toUpperCase() + sbuilder.toString().substring(1);
