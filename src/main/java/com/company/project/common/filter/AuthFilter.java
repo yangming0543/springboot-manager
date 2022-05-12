@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.annotation.Order;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,9 @@ import static com.company.project.service.HttpApiSessionService.USER_USERNAME_KE
 @WebFilter(filterName = "authFilter", urlPatterns = "/*")
 @Order(1)
 public class AuthFilter implements Filter {
+
+    @Resource
+    HttpApiSessionService httpApiSessionService;
     //需要拦截的地址
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -40,7 +44,7 @@ public class AuthFilter implements Filter {
             if(StringUtils.isBlank(token)){
                 responseResult(resp, DataResult.fail("token不能为空"));
             }//  校验并解析token，如果token过期或者篡改，则会返回null
-            Claims claims = HttpApiSessionService.checkJWT(token);
+            Claims claims = httpApiSessionService.checkJWT(token);
             if(null == claims){
                 responseResult(resp, DataResult.fail("登陆失效， 请重新登陆"));
             }

@@ -5,6 +5,7 @@ import com.company.project.service.HttpApiSessionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ import javax.annotation.Resource;
 
 
 /**
- * 首页
+ * api test示例
  *
  * @author wenbin
  * @version V1.0
@@ -26,9 +27,20 @@ public class TestController {
     @Resource
     HttpApiSessionService httpApiSessionService;
 
-    @GetMapping("/test")
-    @ApiOperation(value = "获取首页数据接口")
-    public DataResult getHomeInfo() {
+    @PostMapping("/login")
+    @ApiOperation(value = "登录接口")
+    public DataResult login() {
+        //TODO 登录
+
+        //生成token
+        String token = httpApiSessionService.geneJsonWebToken("123", "测试用户名");
+        return DataResult.success(token);
+    }
+
+
+    @GetMapping("/getCurUserInfo")
+    @ApiOperation(value = "获取当前登录人信息示例")
+    public DataResult getAppUserInfo() {
         //拿userId与userName
         String userId = httpApiSessionService.getCurrentUserId();
         String username = httpApiSessionService.getCurrentUsername();

@@ -40,7 +40,7 @@ public class HttpApiSessionService {
      * @param userId username
      * @return
      */
-    public static String geneJsonWebToken(String userId, String userName) {
+    public String geneJsonWebToken(String userId, String userName) {
         String token = Jwts.builder().setSubject(SUBJECT)
                 .claim(USER_ID_KEY, userId)
                 .claim(USER_USERNAME_KEY, userName)
@@ -58,7 +58,7 @@ public class HttpApiSessionService {
      * @param token
      * @return
      */
-    public static Claims checkJWT(String token) {
+    public Claims checkJWT(String token) {
 
         try {
             final Claims claims = Jwts.parser().setSigningKey(APPSECRET).
