@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/css/custom.form.css">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
 </head>
 <body>
 <div class="panel panel-default operation_role" hidden>
@@ -122,8 +122,11 @@
     <a class="layui-btn layui-btn-xs" lay-event="dataScope" shiro:hasPermission="sys:role:bindDept">数据权限</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sys:role:deleted">删除</a>
 </script>
-<script src="/layui/layui.all.js"></script>
-<script src="/js/core.util.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var ctx  = [[@{/}]].replace('//', '/');
+</script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/core.util.js}"></script>
 <script>
     //获取token
     var token = CoreUtil.getData("access_token");
@@ -139,7 +142,7 @@
     var startTime = null;
     var endTime = null;
     layui.config({
-        base: '/layui-ext/'
+        base: ctx + 'layui-ext/'
     }).extend({
         eleTree: 'eleTree/eleTree'
     }).use(['table', 'laypage', 'layer', 'laydate', 'tree', 'eleTree'], function () {
@@ -149,7 +152,7 @@
             , contentType: 'application/json'
             , headers: {"authorization": token}
             , page: true //开启分页
-            , url: '/sys/roles' //数据接口
+            , url: ctx + 'sys/roles' //数据接口
             , method: 'POST'
             , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                 return {
@@ -247,7 +250,7 @@
             }
         });
         var getRoleDetail = function (id) {
-            CoreUtil.sendGet("/sys/role/" + id, null, function (res) {
+            CoreUtil.sendGet(ctx + "sys/role/" + id, null, function (res) {
                 $(".operation_role input[name=id]").val(res.data.id);
                 $(".operation_role input[name=pid]").val(res.data.pid);
                 $(".operation_role input[name=name]").val(res.data.name);
@@ -283,7 +286,7 @@
             });
         }
         var initTree = function () {
-            CoreUtil.sendGet("/sys/permission/tree/all", null, function (res) {
+            CoreUtil.sendGet(ctx + "sys/permission/tree/all", null, function (res) {
                 loadPermissionTree(res.data);
             });
         };
@@ -347,14 +350,14 @@
                 permissions: getPermissionIds(brchArrays, permissionIds)
             }
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendPost("/sys/role", params, function (res) {
+                CoreUtil.sendPost(ctx + "sys/role", params, function (res) {
                     $(".role_table_div").show();
                     $(".operation_role").hide();
                     $(".operation_role_dataScope").hide();
                     search();
                 });
             } else {
-                CoreUtil.sendPut("/sys/role", params, function (res) {
+                CoreUtil.sendPut(ctx + "sys/role", params, function (res) {
                     //显示表格
                     $(".role_table_div").show();
                     //隐藏编辑窗口
@@ -387,7 +390,7 @@
                 dataScope: $("#dataScope").val(),
                 depts: deptIds
             }
-            CoreUtil.sendPost("/sys/role/bindDept", params, function (res) {
+            CoreUtil.sendPost(ctx + "sys/role/bindDept", params, function (res) {
                 //显示表格
                 $(".role_table_div").show();
                 //隐藏编辑窗口
@@ -403,7 +406,7 @@
                 content: '确定要删除么',
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendDelete("/sys/role/" + id, null, function (res) {
+                    CoreUtil.sendDelete(ctx + "sys/role/" + id, null, function (res) {
                         layer.msg(res.msg);
                         search();
                     });

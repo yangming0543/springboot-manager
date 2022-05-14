@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/css/custom.form.css">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
     <style>
         .custom-tree-item-clicked{color:#FC9003}
     </style>
@@ -116,8 +116,11 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sys:user:update">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sys:user:deleted">删除</a>
 </script>
-<script src="/layui/layui.all.js"></script>
-<script src="/js/core.util.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var ctx  = [[@{/}]].replace('//', '/');
+</script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/core.util.js}"></script>
 <script>
     //获取token
     var token = CoreUtil.getData("access_token");
@@ -144,7 +147,7 @@
             , contentType: 'application/json'
             , headers: {"authorization": token}
             , page: true //开启分页
-            , url: '/sys/users' //数据接口
+            , url: ctx + 'sys/users' //数据接口
             , method: 'POST'
             , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                 return {
@@ -296,7 +299,7 @@
 
                     break;
                 case 'operationRole':
-                    CoreUtil.sendGet("/sys/user/roles/" + data.id, null, function (res) {
+                    CoreUtil.sendGet(ctx + "sys/user/roles/" + data.id, null, function (res) {
                         initTransfer(res.data);
                         layer.open({
                             type: 1,
@@ -320,7 +323,7 @@
                                         roleIds.push(item.value);
                                     });
                                 }
-                                CoreUtil.sendPut("/sys/user/roles/" + data.id, roleIds, function (res) {
+                                CoreUtil.sendPut(ctx + "sys/user/roles/" + data.id, roleIds, function (res) {
                                     layer.msg(res.msg);
                                     search()
                                 });
@@ -344,7 +347,7 @@
                 content: '确定要删除' + username + "用户么?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendDelete("/sys/user", userIds, function (res) {
+                    CoreUtil.sendDelete(ctx + "sys/user", userIds, function (res) {
                         layer.msg(res.msg);
                         search()
                     });
@@ -357,14 +360,14 @@
         });
         form.on('submit(submit)', function (data) {
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendPost("/sys/user", data.field, function (res) {
+                CoreUtil.sendPost(ctx + "sys/user", data.field, function (res) {
                     $(".user_table_div").show();
                     $("#leftTree").show();
                     $(".operation_user").hide();
                     search()
                 });
             } else {
-                CoreUtil.sendPut("/sys/user", data.field, function (res) {
+                CoreUtil.sendPut(ctx + "sys/user", data.field, function (res) {
                     $(".user_table_div").show();
                     $("#leftTree").show();
                     $(".operation_user").hide();
@@ -423,7 +426,7 @@
         });
 
         function initLeftTree(){
-            CoreUtil.sendGet("/sys/dept/tree", null, function (res) {
+            CoreUtil.sendGet(ctx + "sys/dept/tree", null, function (res) {
                 loadLeftTree(res.data);
                 loadDeptTree(res.data);
             });

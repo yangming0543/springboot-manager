@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
 </head>
 <body>
 <div class="layui-container" style="width:600px;">
@@ -67,15 +67,18 @@
     </form>
 </div>
 </body>
-<script src="/layui/layui.all.js"></script>
-<script src="/js/core.util.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var ctx  = [[@{/}]].replace('//', '/');
+</script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/core.util.js}"></script>
 <script>
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
     var form = layui.form;
     var element = layui.element;
     $(function () {
-        CoreUtil.sendGet("/sys/user", null, function (res) {
+        CoreUtil.sendGet(ctx + "sys/user", null, function (res) {
             if (res.data != null) {
                 $(".layui-container input[name=id]").val(res.data.id);
                 $(".layui-container input[name=username]").val(res.data.username);
@@ -100,7 +103,7 @@
 
         //监听提交
         form.on('submit(submit)', function (data) {
-            CoreUtil.sendPut("/sys/user/info", data.field, function (res) {
+            CoreUtil.sendPut(ctx + "sys/user/info", data.field, function (res) {
                 layer.msg(res.msg);
             });
             return false;

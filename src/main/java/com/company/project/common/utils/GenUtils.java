@@ -122,6 +122,11 @@ public class GenUtils {
         map.put("updateId", IdWorker.getId());
         map.put("deleteId", IdWorker.getId());
         map.put("selectId", IdWorker.getId());
+        map.put("identityJoinId", IdWorker.getId());
+        map.put("addIdJoinId", IdWorker.getId());
+        map.put("updateIdJoinId", IdWorker.getId());
+        map.put("deleteIdJoinId", IdWorker.getId());
+        map.put("selectIdJoinId", IdWorker.getId());
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
