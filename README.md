@@ -26,6 +26,7 @@ Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwe
 GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager)  
 如需更简洁版，请移步:[https://gitee.com/zwens/springboot-manager/tree/simple/](https://gitee.com/zwens/springboot-manager/tree/simple/) 
 
+
 ## 开发文档&项目演示
 - 演示地址：[http://manager.aitangbao.cn](http://121.42.10.80:8080)
 - 账号密码：guest/123456
@@ -131,8 +132,8 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 4. 提交 Pull Request
 	  
 ## **效果图**
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/142027_57d18746_997722.png "home1.png")
-![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
+![输入图片说明](Jietu20220522-222508@2x.jpg)
+
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
