@@ -49,7 +49,7 @@
 
 
 <script th:inline="javascript" type="text/javascript">
-    var ctx  = [[@{/}]].replace('//', '/');
+    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
 <script>
     layui.use(['form'], function () {
