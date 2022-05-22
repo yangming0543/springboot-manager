@@ -132,8 +132,9 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 4. 提交 Pull Request
 	  
 ## **效果图**
-![输入图片说明](Jietu20220522-222508@2x.jpg)
+
 ![输入图片说明](Jietu20220522-222518@2x.jpg)
+
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
