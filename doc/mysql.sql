@@ -99,7 +99,7 @@ CREATE TABLE sys_user (
   real_name varchar(60) DEFAULT NULL COMMENT '真实名称',
   nick_name varchar(60) DEFAULT NULL COMMENT '昵称',
   email varchar(50) DEFAULT NULL COMMENT '邮箱(唯一)',
-  status tinyint(4) COMMENT '账户状态(1.正常 2.锁定 )',
+  status tinyint(4) COMMENT '账户状态(1.正常 0.锁定 )',
   sex tinyint(4) COMMENT '性别(1.男 2.女)',
   deleted tinyint(4)  COMMENT '是否删除(1未删除；0已删除)',
   create_id varchar(64) DEFAULT NULL COMMENT '创建人',

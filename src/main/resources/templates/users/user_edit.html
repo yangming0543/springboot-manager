@@ -112,7 +112,7 @@
 
         //监听指定开关
         form.on('switch(switch)', function () {
-            $(".layui-container input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 2);
+            $(".layui-container input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
 
         });
     })
