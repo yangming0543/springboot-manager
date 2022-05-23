@@ -14,7 +14,7 @@
 <div class="panel panel-default operation_user" hidden>
     <div class="panel-heading title"></div>
     <div class="layui-card-body">
-        <form class="layui-form " action="" lay-filter="deptInfo" style="width: 700px;margin-top: 10px">
+        <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
             <input name="id" hidden/>
             <input name="deptId" hidden/>
 
@@ -250,12 +250,10 @@
                     $(".operation_user input[name=password]").val("");
                     $(".operation_user input[name=phone]").val("");
                     $(".operation_user input[name=deptName]").val("");
-                    $(".operation_user input[name=status]").attr('checked', 'checked');
-                    $(".operation_user input[name=status]").attr('type', 'hidden').val(1);
-                    var x = document.getElementsByClassName("layui-unselect layui-form-switch");
-                    x[0].setAttribute("class", "layui-unselect layui-form-switch layui-form-onswitch");
-                    var d = document.getElementsByTagName('em')[0];
-                    d.firstChild.nodeValue = '启用';
+                    form.val('info', {
+                        "status": true //开关状态
+                    });
+                    $(".operation_user input[name=status]").val(1);
                     form.render(); //更新全部
 
                     break;
@@ -282,18 +280,15 @@
                     $(".operation_user input[name=phone]").val(data.phone);
                     $(".operation_user input[name=deptName]").val(data.deptName);
                     if (data.status == 1) {
-                        $(".operation_user input[name=status]").attr('checked', 'checked');
-                        $(".operation_user input[name=status]").attr('type', 'hidden').val(1);
-                        var x = document.getElementsByClassName("layui-unselect layui-form-switch");
-                        x[0].setAttribute("class", "layui-unselect layui-form-switch layui-form-onswitch");
-                        var d = document.getElementsByTagName('em')[0];
-                        d.firstChild.nodeValue = '启用';
+                        form.val('info', {
+                            "status": true //开关状态
+                        });
+                        $(".operation_user input[name=status]").val(1);
                     } else {
-                        $(".operation_user input[name=status]").attr('type', 'hidden').removeAttr("checked").val(2);
-                        var x = document.getElementsByClassName("layui-unselect layui-form-switch");
-                        x[0].setAttribute("class", "layui-unselect layui-form-switch");
-                        var d = document.getElementsByTagName('em')[0];
-                        d.firstChild.nodeValue = '禁用';
+                        form.val('info', {
+                            "status": false //开关状态
+                        });
+                        $(".operation_user input[name=status]").val(0);
                     }
                     form.render(); //更新全部
 
