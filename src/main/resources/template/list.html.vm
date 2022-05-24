@@ -37,17 +37,18 @@
 
 <div class="table_div">
   <div id="searchParam"  shiro:hasPermission="${classname}:list">
-    <div class="layui-form-item">
-      <div class="layui-input-inline">
-        <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
-      </div>
+    <form class="layui-form ">
+      <div class="layui-form-item">
+        <div class="layui-input-inline">
+          <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
+        </div>
 
-      <div class="layui-input-inline ">
-        <button class="layui-btn" onclick="search()"  id="search">查询</button>
-        <button class="layui-btn"   id="export">导出全部</button>
+        <div class="layui-input-inline ">
+          <button class="layui-btn" onclick="search()"  id="search">查询</button>
+          <button class="layui-btn"   id="export">导出全部</button>
+        </div>
       </div>
-    </div>
-
+    </form>
   </div>
   <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
 </div>
@@ -132,9 +133,14 @@
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("新增");
+          setTimeout(function () {
+            form.val('info', {
+              "test": "test"
 #foreach($column in $columns)
-          $(".operation input[name=${column.attrname}]").val("");
+              , "${column.attrname}": ""
 #end
+            });
+          }, 200);
           break;
       };
     });
@@ -151,9 +157,14 @@
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("编辑");
+          setTimeout(function () {
+            form.val('info', {
+              "test": "test"
 #foreach($column in $columns)
-          $(".operation input[name=${column.attrname}]").val(data.${column.attrname});
+                , "${column.attrname}": data.${column.attrname}
 #end
+            });
+          }, 200);
           break;
       }
     });
