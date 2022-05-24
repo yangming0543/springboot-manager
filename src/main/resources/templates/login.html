@@ -51,7 +51,7 @@
                     <label class="layui-icon layui-icon-vercode" name="captcha"></label>
                     <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
                     <div class="captcha-img">
-                        <img  onClick="this.src=this.src+'?'+Math.random();" id="img" class="admin-captcha" width="90" height="40" th:src="@{sys/getVerify}">
+                        <img  onClick="this.src=this.src+'?'+Math.random();" id="img" class="admin-captcha" width="90" height="40" th:src="@{/sys/getVerify}">
                     </div>
                 </div>
 <!--                <div class="layui-form-item">
