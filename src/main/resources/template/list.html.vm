@@ -14,9 +14,9 @@
 <div class="layui-card-body">
 <form class="layui-form " action="" lay-filter="info">
 #foreach($column in $columns)
-  #if($column.columnName == $pk.columnName)
-    <input name="${column.attrname}" hidden/>
-  #else
+#if($column.columnName == $pk.columnName)
+  <input name="${column.attrname}" hidden/>
+#else
     <div class="layui-form-item">
       <label class="layui-form-label">${column.comments}</label>
       <div class="layui-input-block">
@@ -247,9 +247,9 @@
     setTimeout(function () {
       form.val('info', {
         "test": "test"
-        #foreach($column in $columns)
-          , "${column.attrname}": data.${column.attrname}
-        #end
+#foreach($column in $columns)
+        , "${column.attrname}": data.${column.attrname}
+#end
       });
     }, 200);
   }

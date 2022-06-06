@@ -199,6 +199,7 @@
                     $(".operation").show();
                     $(".title").html("新增");
                     form.val('info', {
+                        "id":"",
                         "title": "",
                         "type": "0"
                     })
@@ -225,14 +226,16 @@
                     $(".operation").show();
                     $(".title").html("编辑");
                     form.val('info', {
+                        "id": data.id,
                         "title": data.title,
                         "type": data.type
                     })
                     layedit.setContent(editIndex, data.content);
-                    //checkbox
+                    //复选框回显
                     form.val('info', CoreUtil.setCheckboxValues("keywords", data.keywords));
-
-                    $('#one-img').attr('src', data.oneImg); //图片链接（base64）
+                    //单图回显
+                    $('#one-img').attr('src', data.oneImg);
+                    //多图回显
                     $('#multi-div').empty();
                     if (!CoreUtil.isEmpty(data.multipleImg)) {
                         var arr = data.multipleImg.split(",");
@@ -286,9 +289,9 @@
         form.on('submit(submit)', function (data) {
             //获取复选框的值
             data.field.keywords = CoreUtil.getCheckboxValues("keywords", data.field);
-            //获取图片
+            //单图
             data.field.oneImg = $("#one-img").attr("src");
-            //企业展示 begin
+            //多图
             var urlAll = "";
             $(".multi-img").each(function (index, element) {
                 if (index === 0) {
@@ -318,7 +321,7 @@
         });
 
 
-        //企业展示
+        //多图上传
         upload.render({
             elem: '#multiImgButton'
             , url: ctx + 'sysFiles/upload?authorization=' + tokenQuery //此处配置你自己的上传接口即可
@@ -329,7 +332,7 @@
             }
         });
 
-        //身份证正面
+        //单图上传
         upload.render({
             elem: '#oneImgButton'
             , url: ctx + 'sysFiles/upload?authorization=' + tokenQuery //此处配置你自己的上传接口即可
