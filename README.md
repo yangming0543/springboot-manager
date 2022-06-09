@@ -87,6 +87,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - token支持header跟query传参形式，如:
     - ajax中设置header:```beforeSend: function(request) {request.setRequestHeader("authorization", "有效的token");}```
     - query:```?authorization=有效的token ```
+- 数据库基础字段：id(bigint)、remark(varchar)、unable_flag(tinyint)、deleted(tinyint)、create_id(bigint)、update_id(bigint)、create_time(datetime)、update_time(datetime)
 
 ## 使用说明
 - 使用IDE导入本项目，IDE需要安装lombok插件
