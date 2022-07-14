@@ -83,7 +83,6 @@ public class SysDictController {
     @PostMapping("/listByPage")
     @RequiresPermissions("sysDict:list")
     public DataResult findListByPage(@RequestBody SysDictEntity sysDict) {
-        Page page = new Page(sysDict.getPage(), sysDict.getLimit());
         LambdaQueryWrapper<SysDictEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysDict.getName())) {
@@ -92,7 +91,7 @@ public class SysDictController {
             queryWrapper.like(SysDictEntity::getRemark, sysDict.getName());
         }
         queryWrapper.orderByAsc(SysDictEntity::getName);
-        IPage<SysDictEntity> iPage = sysDictService.page(page, queryWrapper);
+        IPage<SysDictEntity> iPage = sysDictService.page(sysDict.getQueryPage(), queryWrapper);
         return DataResult.success(iPage);
     }
 

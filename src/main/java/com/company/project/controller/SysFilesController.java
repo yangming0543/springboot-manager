@@ -55,8 +55,7 @@ public class SysFilesController {
     @PostMapping("/listByPage")
     @RequiresPermissions("sysFiles:list")
     public DataResult findListByPage(@RequestBody SysFilesEntity sysFiles) {
-        Page page = new Page(sysFiles.getPage(), sysFiles.getLimit());
-        IPage<SysFilesEntity> iPage = sysFilesService.page(page, Wrappers.<SysFilesEntity>lambdaQuery().orderByDesc(SysFilesEntity::getCreateDate));
+        IPage<SysFilesEntity> iPage = sysFilesService.page(sysFiles.getQueryPage(), Wrappers.<SysFilesEntity>lambdaQuery().orderByDesc(SysFilesEntity::getCreateDate));
         return DataResult.success(iPage);
     }
 

@@ -88,13 +88,12 @@ public class SysJobController {
     @PostMapping("/listByPage")
     @RequiresPermissions("sysJob:list")
     public DataResult findListByPage(@RequestBody SysJobEntity sysJob) {
-        Page page = new Page(sysJob.getPage(), sysJob.getLimit());
         LambdaQueryWrapper<SysJobEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysJob.getBeanName())) {
             queryWrapper.like(SysJobEntity::getBeanName, sysJob.getBeanName());
         }
-        IPage<SysJobEntity> iPage = sysJobService.page(page, queryWrapper);
+        IPage<SysJobEntity> iPage = sysJobService.page(sysJob.getQueryPage(), queryWrapper);
         return DataResult.success(iPage);
     }
 

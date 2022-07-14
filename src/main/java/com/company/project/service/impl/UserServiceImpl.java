@@ -157,7 +157,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     public IPage<SysUser> pageInfo(SysUser vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getUsername())) {
             queryWrapper.like(SysUser::getUsername, vo.getUsername());
@@ -181,7 +180,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             queryWrapper.in(SysUser::getDeptId, list);
         }
         queryWrapper.orderByDesc(SysUser::getCreateTime);
-        IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
+        IPage<SysUser> iPage = sysUserMapper.selectPage(vo.getQueryPage(), queryWrapper);
         if (!CollectionUtils.isEmpty(iPage.getRecords())) {
             for (SysUser sysUser : iPage.getRecords()) {
                 SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());

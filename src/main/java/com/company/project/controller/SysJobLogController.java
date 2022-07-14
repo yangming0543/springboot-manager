@@ -35,14 +35,13 @@ public class SysJobLogController {
     @PostMapping("/listByPage")
     @RequiresPermissions("sysJob:list")
     public DataResult findListByPage(@RequestBody SysJobLogEntity sysJobLog) {
-        Page page = new Page(sysJobLog.getPage(), sysJobLog.getLimit());
         LambdaQueryWrapper<SysJobLogEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysJobLog.getJobId())) {
             queryWrapper.like(SysJobLogEntity::getJobId, sysJobLog.getJobId());
         }
         queryWrapper.orderByDesc(SysJobLogEntity::getCreateTime);
-        IPage<SysJobLogEntity> iPage = sysJobLogService.page(page, queryWrapper);
+        IPage<SysJobLogEntity> iPage = sysJobLogService.page(sysJobLog.getQueryPage(), queryWrapper);
         return DataResult.success(iPage);
     }
 

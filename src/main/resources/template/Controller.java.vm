@@ -73,11 +73,11 @@ public class ${className}Controller {
     @RequiresPermissions("${classname}:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
-        Page page = new Page(${classname}.getPage(), ${classname}.getLimit());
         LambdaQueryWrapper<${className}Entity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
-        //queryWrapper.eq(${className}Entity::getId, ${classname}.getId());
-        IPage<${className}Entity> iPage = ${classname}Service.page(page, queryWrapper);
+        queryWrapper.eq(${className}Entity::getId, ${classname}.getId());
+        queryWrapper.orderByDesc(${className}Entity::getId);
+        IPage<${className}Entity> iPage = ${classname}Service.page(${classname}.getQueryPage(), queryWrapper);
         return DataResult.success(iPage);
     }
 

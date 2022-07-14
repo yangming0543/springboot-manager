@@ -113,7 +113,6 @@ public class RoleController {
     @RequiresPermissions("sys:role:list")
     @SuppressWarnings("unchecked")
     public DataResult pageInfo(@RequestBody SysRole vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
         LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getName())) {
             queryWrapper.like(SysRole::getName, vo.getName());
@@ -128,7 +127,7 @@ public class RoleController {
             queryWrapper.eq(SysRole::getStatus, vo.getStatus());
         }
         queryWrapper.orderByDesc(SysRole::getCreateTime);
-        return DataResult.success(roleService.page(page, queryWrapper));
+        return DataResult.success(roleService.page(vo.getQueryPage(), queryWrapper));
     }
 
 }

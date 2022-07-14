@@ -64,7 +64,6 @@ public class SysContentController {
     @RequiresPermissions("sysContent:list")
     @DataScope
     public DataResult findListByPage(@RequestBody SysContentEntity sysContent) {
-        Page page = new Page(sysContent.getPage(), sysContent.getLimit());
         LambdaQueryWrapper<SysContentEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysContent.getTitle())) {
@@ -76,7 +75,7 @@ public class SysContentController {
         }
         //数据权限示例， 需手动添加此条件 end
 
-        IPage<SysContentEntity> iPage = sysContentService.page(page, queryWrapper);
+        IPage<SysContentEntity> iPage = sysContentService.page(sysContent.getQueryPage(), queryWrapper);
         return DataResult.success(iPage);
     }
 }

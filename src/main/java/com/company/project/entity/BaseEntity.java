@@ -2,6 +2,8 @@ package com.company.project.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 import java.util.List;
@@ -28,4 +30,13 @@ public class BaseEntity {
      */
     @TableField(exist = false)
     private List<String> createIds;
+
+    /**
+     * page条件
+     * @param <T>
+     * @return
+     */
+    public <T> Page getQueryPage() {
+        return new Page<T>(page, limit);
+    }
 }
