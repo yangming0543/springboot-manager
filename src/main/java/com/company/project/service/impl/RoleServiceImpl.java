@@ -141,7 +141,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
         userRoleService.remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getRoleId, id));
         if (!CollectionUtils.isEmpty(userIds)) {
             // 刷新权限
-            userIds.parallelStream().forEach(httpSessionService::refreshUerId);
+            userIds.stream().forEach(httpSessionService::refreshUerId);
         }
     }
 

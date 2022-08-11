@@ -93,7 +93,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
 
         if (!CollectionUtils.isEmpty(userIds)) {
             //刷新权限
-            userIds.parallelStream().forEach(httpSessionService::refreshUerId);
+            userIds.stream().forEach(httpSessionService::refreshUerId);
         }
 
     }

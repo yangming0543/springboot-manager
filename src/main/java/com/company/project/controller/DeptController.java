@@ -81,7 +81,7 @@ public class DeptController {
     @RequiresPermissions("sys:dept:list")
     public DataResult getDeptAll() {
         List<SysDept> deptList = deptService.list();
-        deptList.parallelStream().forEach(entity -> {
+        deptList.stream().forEach(entity -> {
             SysDept parentDept = deptService.getById(entity.getPid());
             if (parentDept != null) {
                 entity.setPidName(parentDept.getName());
