@@ -19,11 +19,11 @@ import java.util.List;
 public class BaseEntity {
     @JSONField(serialize = false)
     @TableField(exist = false)
-    private int page = 1;
+    private Integer page = 1;
 
     @JSONField(serialize = false)
     @TableField(exist = false)
-    private int limit = 10;
+    private Integer limit = 10;
 
     /**
      * 数据权限：用户id
