@@ -1,16 +1,15 @@
 package com.company.project.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysFilesEntity;
 import com.company.project.service.SysFilesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +33,7 @@ public class SysFilesController {
 
     @ApiOperation(value = "新增")
     @PostMapping("/upload")
-    @RequiresPermissions(value = {"sysFiles:add", "sysContent:update", "sysContent:add"}, logical = Logical.OR)
+    @SaCheckPermission(value = {"sysFiles:add", "sysContent:update", "sysContent:add"}, mode = SaMode.OR)
     public DataResult add(@RequestParam(value = "file") MultipartFile file) {
         //判断文件是否空
         if (file == null || file.getOriginalFilename() == null || "".equalsIgnoreCase(file.getOriginalFilename().trim())) {
@@ -45,7 +44,7 @@ public class SysFilesController {
 
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete")
-    @RequiresPermissions("sysFiles:delete")
+    @SaCheckPermission("sysFiles:delete")
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysFilesService.removeByIdsAndFiles(ids);
         return DataResult.success();
@@ -53,7 +52,7 @@ public class SysFilesController {
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
-    @RequiresPermissions("sysFiles:list")
+    @SaCheckPermission("sysFiles:list")
     public DataResult findListByPage(@RequestBody SysFilesEntity sysFiles) {
         IPage<SysFilesEntity> iPage = sysFilesService.page(sysFiles.getQueryPage(), Wrappers.<SysFilesEntity>lambdaQuery().orderByDesc(SysFilesEntity::getCreateDate));
         return DataResult.success(iPage);

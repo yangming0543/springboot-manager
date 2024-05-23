@@ -1,8 +1,8 @@
 package com.company.project.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.company.project.common.utils.DataResult;
 import com.company.project.service.HomeService;
-import com.company.project.service.HttpSessionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +25,12 @@ import javax.annotation.Resource;
 public class HomeController {
     @Resource
     private HomeService homeService;
-    @Resource
-    private HttpSessionService httpSessionService;
 
     @GetMapping("/home")
     @ApiOperation(value = "获取首页数据接口")
     public DataResult getHomeInfo() {
         //通过access_token拿userId
-        String userId = httpSessionService.getCurrentUserId();
+        String userId = StpUtil.getLoginIdAsString();
         DataResult result = DataResult.success();
         result.setData(homeService.getHomeInfo(userId));
         return result;

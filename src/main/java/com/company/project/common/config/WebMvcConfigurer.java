@@ -1,5 +1,8 @@
 package com.company.project.common.config;
 
+import cn.dev33.satoken.interceptor.SaInterceptor;
+import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
@@ -15,10 +18,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
@@ -40,6 +40,45 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 
     @Resource
     private FileUploadProperties fileUploadProperties;
+
+    /**
+     * 发现如果继承了WebMvcConfigurationSupport，则在yml中配置的相关内容会失效。 需要重新指定静态资源
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations(
+                "classpath:/static/");
+        registry.addResourceHandler("doc.html").addResourceLocations(
+                "classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations(
+                "classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler(fileUploadProperties.getAccessUrl())
+                .addResourceLocations("file:" + fileUploadProperties.getPath());
+    }
+
+
+
+    //添加拦截器
+    //web是从管理后台来的接口，不走app那一套校验逻辑
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SaInterceptor(handler ->
+                SaRouter.match("/**", r -> StpUtil.checkLogin()))
+                .isAnnotation(true))
+                .excludePathPatterns("/doc.html")
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/webjars/**")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/static/**")
+                .excludePathPatterns(fileUploadProperties.getAccessUrl())
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/index/login")
+                .excludePathPatterns("/sys/user/login")
+                .excludePathPatterns("/sys/getVerify")
+
+                .excludePathPatterns("/app/api/**")
+                .addPathPatterns("/**");
+    }
 
 
     /**
@@ -111,21 +150,6 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
     }
 
 
-    /**
-     * 发现如果继承了WebMvcConfigurationSupport，则在yml中配置的相关内容会失效。 需要重新指定静态资源
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations(
-                "classpath:/static/");
-        registry.addResourceHandler("doc.html").addResourceLocations(
-                "classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations(
-                "classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler(fileUploadProperties.getAccessUrl())
-                .addResourceLocations("file:" + fileUploadProperties.getPath());
-    }
-
 
     /**
      * 配置servlet处理
@@ -135,6 +159,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
             DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+
 
 
 }

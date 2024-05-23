@@ -43,7 +43,7 @@ public class ${className}Controller {
 
     @ApiOperation(value = "新增")
     @PostMapping("${classname}/add")
-    @RequiresPermissions("${classname}:add")
+    @SaCheckPermission("${classname}:add")
     @ResponseBody
     public DataResult add(@RequestBody ${className}Entity ${classname}){
         ${classname}Service.save(${classname});
@@ -52,7 +52,7 @@ public class ${className}Controller {
 
     @ApiOperation(value = "删除")
     @DeleteMapping("${classname}/delete")
-    @RequiresPermissions("${classname}:delete")
+    @SaCheckPermission("${classname}:delete")
     @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids){
         ${classname}Service.removeByIds(ids);
@@ -61,7 +61,7 @@ public class ${className}Controller {
 
     @ApiOperation(value = "更新")
     @PutMapping("${classname}/update")
-    @RequiresPermissions("${classname}:update")
+    @SaCheckPermission("${classname}:update")
     @ResponseBody
     public DataResult update(@RequestBody ${className}Entity ${classname}){
         ${classname}Service.updateById(${classname});
@@ -70,7 +70,7 @@ public class ${className}Controller {
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("${classname}/listByPage")
-    @RequiresPermissions("${classname}:list")
+    @SaCheckPermission("${classname}:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
         LambdaQueryWrapper<${className}Entity> queryWrapper = Wrappers.lambdaQuery();

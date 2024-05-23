@@ -1,5 +1,6 @@
 package com.company.project.common.aop.aspect;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.exception.BusinessException;
@@ -34,8 +35,6 @@ import java.util.stream.Collectors;
 public class DataScopeAspect {
 
     @Resource
-    HttpSessionService sessionService;
-    @Resource
     RoleService roleService;
     @Resource
     SysRoleDeptService sysRoleDeptService;
@@ -56,7 +55,7 @@ public class DataScopeAspect {
 
     protected void handleDataScope(final JoinPoint joinPoint) {
         //获取当前登陆人
-        String id = sessionService.getCurrentUserId();
+        String id = StpUtil.getLoginIdAsString();
         //获取当前登陆人角色, 如果无角色, 那么不限制
         List<SysRole> sysRoles = roleService.getRoleInfoByUserId(id);
         if (CollectionUtils.isEmpty(sysRoles) || sysRoles.size() == 0) {
