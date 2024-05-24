@@ -13,7 +13,7 @@
   <div class="panel-heading title"></div>
 <div class="layui-card-body">
 <form class="layui-form " action="" lay-filter="info">
-#foreach($column in $columns)
+#foreach($column in $htmlColumns)
 #if($column.columnName == $pk.columnName)
   <input name="${column.attrname}" hidden/>
 #else
@@ -40,7 +40,6 @@
     <form class="layui-form ">
       <div class="layui-form-item">
         <div class="layui-input-inline">
-          <label class="layui-form-label">名称</label>
           <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
         </div>
 
@@ -101,7 +100,7 @@
       , cols: [
         [
           {type: 'checkbox', fixed: 'left'},
-#foreach($column in $columns)
+#foreach($column in $htmlColumns)
           {field: '${column.attrname}', title: '${column.comments}', sort: true},
 #end
           {width: 120, toolbar: "#tool", title: '操作'}
@@ -135,7 +134,7 @@
           setTimeout(function () {
             form.val('info', {
               "test": "test"
-#foreach($column in $columns)
+#foreach($column in $htmlColumns)
               , "${column.attrname}": ""
 #end
             });
@@ -242,7 +241,7 @@
     setTimeout(function () {
       form.val('info', {
         "test": "test"
-#foreach($column in $columns)
+#foreach($column in $htmlColumns)
         , "${column.attrname}": data.${column.attrname}
 #end
       });
