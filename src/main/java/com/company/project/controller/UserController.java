@@ -9,9 +9,11 @@ import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysUser;
 import com.company.project.entity.SysUserRole;
+import com.company.project.service.HomeService;
 import com.company.project.service.UserRoleService;
 import com.company.project.service.UserService;
 import com.company.project.vo.req.UserRoleOperationReqVO;
+import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,6 +46,23 @@ public class UserController {
     private UserService userService;
     @Resource
     private UserRoleService userRoleService;
+    @Resource
+    private HomeService homeService;
+    /**
+     * 获取验证码图片
+     * Gets captcha code.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException the io exception
+     */
+    @RequestMapping("/getVerify")
+    public void getCaptchaCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ArithmeticCaptcha captcha = new ArithmeticCaptcha(130, 48);
+        captcha.setLen(2);
+        CaptchaUtil.out(captcha, request, response);
+    }
+
 
     @PostMapping(value = "/user/login")
     @ApiOperation(value = "用户登录接口")
@@ -53,6 +74,15 @@ public class UserController {
             return DataResult.fail("验证码错误！");
         }
         return DataResult.success(userService.login(vo));
+    }
+    @GetMapping("/home")
+    @ApiOperation(value = "获取首页数据接口")
+    public DataResult getHomeInfo() {
+        //通过access_token拿userId
+        String userId = StpUtil.getLoginIdAsString();
+        DataResult result = DataResult.success();
+        result.setData(homeService.getHomeInfo(userId));
+        return result;
     }
 
     @PostMapping("/user/register")

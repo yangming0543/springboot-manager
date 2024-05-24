@@ -53,7 +53,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         }
         vo.setDeptNo(deptCode);
         vo.setRelationCode(relationCode);
-        vo.setStatus(1);
         sysDeptMapper.insert(vo);
     }
 

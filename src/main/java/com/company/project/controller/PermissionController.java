@@ -37,7 +37,6 @@ public class PermissionController {
     @SaCheckPermission("sys:permission:add")
     public DataResult addPermission(@RequestBody @Valid SysPermission vo) {
         verifyFormPid(vo);
-        vo.setStatus(1);
         permissionService.save(vo);
         return DataResult.success();
     }

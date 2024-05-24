@@ -1,14 +1,17 @@
 package com.company.project.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysRole;
 import com.company.project.entity.SysRoleDeptEntity;
+import com.company.project.service.RolePermissionService;
 import com.company.project.service.RoleService;
 import com.company.project.service.SysRoleDeptService;
+import com.company.project.vo.req.RolePermissionOperationReqVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.CollectionUtils;
@@ -35,7 +38,9 @@ public class RoleController {
     private RoleService roleService;
     @Resource
     private SysRoleDeptService sysRoleDeptService;
-
+    @Resource
+    private RolePermissionService rolePermissionService;
+    
     @PostMapping("/role")
     @ApiOperation(value = "新增角色接口")
     @LogAnnotation(title = "角色管理", action = "新增角色")
@@ -129,4 +134,12 @@ public class RoleController {
         return DataResult.success(roleService.page(vo.getQueryPage(), queryWrapper));
     }
 
+    @PostMapping("/role/permission")
+    @ApiOperation(value = "修改或者新增角色菜单权限接口")
+    @LogAnnotation(title = "角色和菜单关联接口", action = "修改或者新增角色菜单权限")
+    @SaCheckPermission(value = {"sys:role:update", "sys:role:add"}, mode  = SaMode.OR)
+    public DataResult operationRolePermission(@RequestBody @Valid RolePermissionOperationReqVO vo) {
+        rolePermissionService.addRolePermission(vo);
+        return DataResult.success();
+    }
 }
