@@ -9,6 +9,7 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.alibaba.fastjson.serializer.ValueFilter;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.http.converter.support.AllEncompassingFormHttpMessage
 import org.springframework.web.servlet.config.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -35,11 +37,10 @@ import java.util.List;
  * @date 2020年3月18日
  */
 @Configuration
-@EnableConfigurationProperties(FileUploadProperties.class)
 public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 
-    @Resource
-    private FileUploadProperties fileUploadProperties;
+    @Value("${file.path}")
+    private String filePath;
 
     /**
      * 发现如果继承了WebMvcConfigurationSupport，则在yml中配置的相关内容会失效。 需要重新指定静态资源
@@ -52,8 +53,8 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 "classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations(
                 "classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler(fileUploadProperties.getAccessUrl())
-                .addResourceLocations("file:" + fileUploadProperties.getPath());
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("file:" + filePath  + File.separator);
     }
 
 
@@ -70,7 +71,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/webjars/**")
                 .excludePathPatterns("/error")
                 .excludePathPatterns("/static/**")
-                .excludePathPatterns(fileUploadProperties.getAccessUrl())
+                .excludePathPatterns("/files/**")
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/index/login")
                 .excludePathPatterns("/sys/user/login")

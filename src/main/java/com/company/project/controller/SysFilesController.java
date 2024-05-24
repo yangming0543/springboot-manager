@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -34,12 +35,12 @@ public class SysFilesController {
     @ApiOperation(value = "新增")
     @PostMapping("/upload")
     @SaCheckPermission(value = {"sysFiles:add", "sysContent:update", "sysContent:add"}, mode = SaMode.OR)
-    public DataResult add(@RequestParam(value = "file") MultipartFile file) {
+    public DataResult add(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
         //判断文件是否空
         if (file == null || file.getOriginalFilename() == null || "".equalsIgnoreCase(file.getOriginalFilename().trim())) {
             return DataResult.fail("文件为空");
         }
-        return sysFilesService.saveFile(file);
+        return sysFilesService.saveFile(file, request);
     }
 
     @ApiOperation(value = "删除")
