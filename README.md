@@ -27,8 +27,9 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 
 ## 开发文档&项目演示
-- 演示地址：[springboot-manager](http://1.94.23.145:9000)
-- 账号密码：guest/123456
+- 演示地址：[springboot-manager](http://1.94.23.145:9000/manager/)
+-  **账号密码：guest/123456** 
+- 开发文档：[开发文档wiki](https://gitee.com/zwens/springboot-manager/wikis/%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3/%E4%BB%8B%E7%BB%8D)
 - 带宽1m 不太给力 请见谅 :joy:
 
 ## 代码结构
@@ -92,7 +93,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 运行项目
    	1. 直接运行CompanyProjectApplication.java
 	2. 项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
-- 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
+- 登录地址 http://localhost:8080/manager/index/login 用户名密码:admin/123456
 - 代码生成使用  
     1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用数据库关键字
     2. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
