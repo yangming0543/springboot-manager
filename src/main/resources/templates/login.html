@@ -1,19 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>后台管理-登陆</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <style>
         html, body {width: 100%;height: 100%;overflow: hidden}
         body {background: #1E9FFF;}
@@ -30,6 +19,9 @@
         .captcha-img {display:inline-block;width:34%;float:right;}
         .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
     </style>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
+    <script th:src="@{/static/js/jq-module/jquery.particleground.min.js}"></script>
 </head>
 <body>
 <div class="layui-container">
@@ -64,12 +56,7 @@
         </div>
     </div>
 </div>
-<script th:src="@{/static/layui/layui.js}"></script>
-<script th:src="@{/static/js/jquery.js}"></script>
-<script th:src="@{/static/js/jq-module/jquery.particleground.min.js}"></script>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
+
 <script>
     layui.use(['form'], function () {
         var form = layui.form,

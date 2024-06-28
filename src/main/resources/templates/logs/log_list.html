@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div id="searchParam">
@@ -37,11 +38,6 @@
 <script type="text/html" id="tool">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:log:deleted">删除</a>
 </script>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
     var tableIns1;
     var table = layui.table;

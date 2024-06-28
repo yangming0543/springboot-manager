@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
-    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
     <style>
         .custom-tree-item-clicked{color:#FC9003}
     </style>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="panel panel-default operation_user" hidden>
@@ -140,11 +140,6 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sys:user:update">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:user:deleted">删除</a>
 </script>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
     var tableIns1;
     var table = layui.table;

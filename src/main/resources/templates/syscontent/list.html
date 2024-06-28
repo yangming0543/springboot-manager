@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
     <style>
         .layui-upload-img {
             width: 92px;
             height: 92px;
         }
     </style>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="panel panel-default operation" hidden>
@@ -113,11 +113,6 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
     //文章类型字典数据
     var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g, "\"");

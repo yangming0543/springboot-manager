@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-  <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
+  <!--公共模块-->
+  <div th:replace="~{layout}"></div>
+  <script th:src="@{/static/js/jquery.fileDownload.js}"></script>
 </head>
 <body>
 <div class="table_div">
@@ -34,13 +35,7 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-  var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
-<script th:src="@{/static/js/jquery.js}"></script>
-<script th:src="@{/static/js/jquery.fileDownload.js}"></script>
+
 <script>
   var tableIns1;
   var table = layui.table;

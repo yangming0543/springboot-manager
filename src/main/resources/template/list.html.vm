@@ -4,10 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-  <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
-    <style id="layuimini-bg-color">
-    </style>
+  <!--公共模块-->
+  <div th:replace="~{layout}"></div>
 <body>
 <div class="panel panel-default operation" hidden>
   <div class="panel-heading title"></div>
@@ -67,11 +65,6 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-  var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
   var tableIns1;
   var table = layui.table;
