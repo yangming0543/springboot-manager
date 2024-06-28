@@ -17,7 +17,8 @@
         <div class="layui-logo">Springboot-Manager</div>
 
         <a>
-            <div class="layuimini-tool-left"  onclick="iconHide()"><i class="icon-color layui-icon layui-icon-shrink-right" style="color:white" id="hide"></i></div>
+            <div class="layuimini-tool-left" onclick="iconHide()"><i
+                    class="icon-color layui-icon layui-icon-shrink-right" style="color:white" id="hide"></i></div>
         </a>
 
         <!-- 头部区域（可配合layui已有的水平导航） -->
@@ -33,9 +34,11 @@
                     <div><span id="nickName">guest</span></div>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a id="userProper" href="javascript:;" data-id="userProper" data-title="基本资料" data-url="/index/users/info"
+                    <dd><a id="userProper" href="javascript:;" data-id="userProper" data-title="基本资料"
+                           data-url="/index/users/info"
                            class="menuNvaBar">基本资料</a></dd>
-                    <dd><a id="userSafe" href="javascript:;" data-id="userSafe" data-title="安全设置" data-url="/index/users/password"
+                    <dd><a id="userSafe" href="javascript:;" data-id="userSafe" data-title="安全设置"
+                           data-url="/index/users/password"
                            class="menuNvaBar">更换密码</a></dd>
                     <dd><a href="javascript:;" id="logout">退出</a></dd>
                 </dl>
@@ -63,8 +66,10 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;"> <i class="layui-icon layui-icon-circle-dot"></i> 页面操作</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-page-close="other"><i class="layui-icon layui-icon-close"></i> 关闭其他</a></dd>
-                        <dd><a href="javascript:;" data-page-close="all"><i class="layui-icon layui-icon-close-fill"></i> 关闭全部</a></dd>
+                        <dd><a href="javascript:;" data-page-close="other"><i class="layui-icon layui-icon-close"></i>
+                            关闭其他</a></dd>
+                        <dd><a href="javascript:;" data-page-close="all"><i
+                                class="layui-icon layui-icon-close-fill"></i> 关闭全部</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -89,86 +94,54 @@
     $(function () {
         FrameWH();
         //递归获取导航栏无线层级
-        var getChild = function (item, ulHtml) {
-            ulHtml += '<dl class="layui-nav-child">';
-            $.each(item, function (index, child) {
-                if (child.children != null && child.children.length > 0 && child.type == 1) {
-                    ulHtml += '<dd><a>' + child.title + '</a>';
-                    ulHtml += getChild(child.children, "");
-                } else if (child.children != null && child.children.length > 0 && child.type != 1) {
-                    ulHtml += '<a>' + child.title + '</a>';
-                    ulHtml += getChild(child.children, "");
-                } else {
-                    if (child.target == "_blank") {
-                        ulHtml += '<dd><a href="' + ctx + child.url + '" target="_blank">';
-                    } else {
-                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + ctx +  child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
-                    }
-                    ulHtml += '<cite>' + child.title + '</cite></a></dd>';
+        //递归获取导航栏无线层级
+        var getChild = function (item) {
+            let ulHtml = '<dl class="layui-nav-child">';
+            item.forEach(child => {
+                //判断url是不是http开头
+                let url = ctx + child.url;
+                if ((child.url).startsWith('http')) {
+                    url = child.url;
                 }
-                if (child.children != null && child.children.length > 0 && child.type == 1) {
-                    ulHtml += '</dd>';
-                }
+                let iconHtml = child.icon ? `<i class="layui-icon ${child.icon}"></i>` : '';
+                let childHtml = '';
 
+                if (child.children && child.children.length > 0) {
+                    childHtml = `<dd><a>${iconHtml}<cite>${child.title}</cite></a>${getChild(child.children)}</dd>`;
+                } else {
+                    let targetAttr = child.target == "_blank" ? ' target="_blank"' : '';
+                    let dataAttrs = `data-icon="${child.icon}" data-url="${url}" data-title="${child.title}" data-id="${child.id}"`;
+                    //如果target是_blank，直接a href
+                    if (child.target == "_blank") {
+                        childHtml = `<dd><a href="${url}" class="menuNvaBar"${targetAttr}${dataAttrs}>${iconHtml}<cite>${child.title}</cite></a></dd>`;
+                    } else {
+                        childHtml = `<dd><a href="javascript:;" class="menuNvaBar"${targetAttr}${dataAttrs}>${iconHtml}<cite>${child.title}</cite></a></dd>`;
+                    }
+                }
+                ulHtml += childHtml;
             });
-            ulHtml += "</dl>"
+            ulHtml += "</dl>";
             return ulHtml;
         };
+
         CoreUtil.sendGet(ctx + "sys/home/", null, function (res) {
             $("#deptName").html("所属部门: " + res.data.userInfo.deptName);
             $("#nickName").html(res.data.userInfo.username);
-            var data = res.data.menus;
-            if (data != "" && data.length > 0) {
-                var ulHtml = '<ul class="layui-nav layui-nav-tree layui-left-nav" onclick="ulHide()">';
-                if (data != null && data.length > 0) {
-
-                    $.each(data, function (index, item) {
-                        if (index == 0) {
-                            ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
-                        } else {
-                            ulHtml += '<li class="layui-nav-item">';
-                        }
-                        ulHtml += '<a href="javascript:;">';
-                        if (!CoreUtil.isEmpty(item.icon)) {
-                            ulHtml += '<i class="layui-icon '+item.icon+'"></i>';
-                        }
-                        ulHtml += '<cite> ' + item.title + '</cite>';
-                        ulHtml += '</a>'
-                        if (item.children != null && item.children.length > 0) {
-                            ulHtml += '<dl class="layui-nav-child">';
-                            $.each(item.children, function (index, child) {
-                                if (child.children != null && child.children.length > 0 && child.type == 1) {
-                                    ulHtml += '<dd><a>' + child.title + '</a>';
-                                    ulHtml += getChild(child.children, "");
-                                } else if (child.children != null && child.children.length > 0 && child.type != 1) {
-                                    ulHtml += '<a>' + child.title + '</a>';
-                                    ulHtml += getChild(child.children, "");
-                                } else {
-                                    if (child.target == "_blank") {
-                                        ulHtml += '<dd><a href="' + ctx +  child.url + '" target="_blank">';
-                                    } else {
-                                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + ctx + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
-                                    }
-                                    if (!CoreUtil.isEmpty(child.icon)) {
-                                        ulHtml += '<i class="layui-icon '+child.icon+'"></i>';
-                                    }
-                                    ulHtml += '<cite> ' + child.title + '</cite></a></dd>';
-                                }
-
-                                if (child.children != null && child.children.length > 0 && child.type == 1) {
-                                    ulHtml += '</dd>';
-                                }
-
-                            });
-                            ulHtml += "</dl>"
-                        }
-                        ulHtml += '</li>'
-                    });
-                }
+            let data = res.data.menus;
+            if (data && data.length > 0) {
+                let ulHtml = '<ul class="layui-nav layui-nav-tree layui-left-nav" onclick="ulHide()">';
+                data.forEach((item, index) => {
+                    let itemClass = index === 0 ? 'layui-nav-item layui-nav-itemed' : 'layui-nav-item';
+                    let iconHtml = item.icon ? `<i class="layui-icon ${item.icon}"></i>` : '';
+                    ulHtml += `<li class="${itemClass}"><a href="javascript:;">${iconHtml}<cite> ${item.title}</cite></a>`;
+                    if (item.children && item.children.length > 0) {
+                        ulHtml += getChild(item.children);
+                    }
+                    ulHtml += '</li>';
+                });
                 ulHtml += '</ul>';
-                $(".navBar").append(ulHtml);
+                $("#navBarId").html(ulHtml);
                 element.init();  //初始化页面元素
-
             } else {
                 $("#navBarId").empty();
             }
@@ -177,36 +150,27 @@
         });
         $(document).on('click', '.menuNvaBar', function () {
             var dataid = $(this);
+            // 如果target是_blank，直接返回
+            if (dataid.attr("target") === "_blank") {
+                return;
+            }
             if ($(".layui-tab-title li[lay-id]").length <= 0) {
-                if (CoreUtil.isEmpty(dataid.attr("data-icon"))){
-                    var title = "<span>"+dataid.attr("data-title")+"</span>";
-                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
-                } else {
-                    var title = "<span>"+dataid.attr("data-title")+"</span>";
-                    title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + title;
-                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
-                }
+                var title = CoreUtil.isEmpty(dataid.attr("data-icon")) ? `<span>${dataid.attr("data-title")}</span>` : `<i class="layui-icon ${dataid.attr("data-icon")}"></i> <span>${dataid.attr("data-title")}</span>`;
+                active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
             } else {
                 var isData = false;
-                $.each($(".layui-tab-title li[lay-id]"), function () {
+                $(".layui-tab-title li[lay-id]").each(function () {
                     if ($(this).attr("lay-id") == dataid.attr("data-id")) {
                         isData = true;
                     }
-                })
-                if (isData == false) {
-                    if (CoreUtil.isEmpty(dataid.attr("data-icon"))){
-                        var title = "<span>"+dataid.attr("data-title")+"</span>";
-                        active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
-                    } else {
-                        var title = "<span>"+dataid.attr("data-title")+"</span>";
-                        title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + title;
-                        active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
-                    }
+                });
+                if (!isData) {
+                    var title = CoreUtil.isEmpty(dataid.attr("data-icon")) ? `<span>${dataid.attr("data-title")}</span>` : `<i class="layui-icon ${dataid.attr("data-icon")}"></i> <span>${dataid.attr("data-title")}</span>`;
+                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
                 }
             }
             active.tabChange(dataid.attr("data-id"));
         });
-
         //推出登录
         $("#logout").click(function () {
             logoutDialog();
@@ -253,6 +217,7 @@
         var h = $(window).height() - 41 - 10 - 35 - 10 - 44 - 10;
         $("iframe").css("height", h + "px");
     };
+
 
 </script>
 
