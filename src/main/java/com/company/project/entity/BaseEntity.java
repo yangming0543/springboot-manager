@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2020年3月18日
  */
 @Data
-@JsonIgnoreProperties(value = {"page", "limit"})
+@JsonIgnoreProperties(value = {"page", "limit", "getQueryPage"})
 public class BaseEntity {
     @JSONField(serialize = false)
     @TableField(exist = false)
@@ -38,6 +38,7 @@ public class BaseEntity {
      * @param <T>
      * @return
      */
+    @JSONField(serialize = false)
     public <T> Page getQueryPage() {
         return new Page<T>(page, limit);
     }
