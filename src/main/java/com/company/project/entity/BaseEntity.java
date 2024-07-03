@@ -2,7 +2,6 @@ package com.company.project.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -35,6 +34,7 @@ public class BaseEntity {
 
     /**
      * page条件
+     *
      * @param <T>
      * @return
      */
