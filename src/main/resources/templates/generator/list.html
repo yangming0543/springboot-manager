@@ -6,7 +6,6 @@
   <title>Title</title>
   <!--公共模块-->
   <div th:replace="~{layout}"></div>
-  <script th:src="@{/static/js/jquery.fileDownload.js}"></script>
 </head>
 <body>
 <div class="table_div">
@@ -42,9 +41,7 @@
   var form = layui.form;
   var layer = layui.layer;
   var laydate = layui.laydate;
-
-  layui.use(['table', 'layer', 'laydate'], function () {
-
+  layui.use(function () {
     //加载table
     tableIns1 = table.render({
       elem: '#showTable'
@@ -85,7 +82,7 @@
                       $(data).each(function (index, item) {
                           tables.push(item.tableName);
                       });
-                      $.fileDownload(ctx + "sysGenerator/gen?tables=" + tables,{httpMethod: 'get'})
+                      location.href = ctx + "sysGenerator/gen?tables=" + tables;
                   }
                   break;
           }
@@ -96,7 +93,7 @@
           var data = obj.data;
           switch (obj.event) {
               case 'gen':
-                $.fileDownload(ctx + "sysGenerator/gen?tables=" + data.tableName,{httpMethod: 'get'})
+                location.href = ctx + "sysGenerator/gen?tables=" + data.tableName;
                 break;
           }
       });

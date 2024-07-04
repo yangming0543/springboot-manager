@@ -127,7 +127,6 @@
     var table = layui.table;
     var form = layui.form;
     var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
     var tree = layui.tree;
     var startTime = null;
@@ -136,7 +135,7 @@
         base: ctx + 'static/layui-ext/'
     }).extend({
         eleTree: 'eleTree/eleTree'
-    }).use(['table', 'laypage', 'layer', 'laydate', 'tree', 'eleTree'], function () {
+    }).use(function () {
         var eleTree = layui.eleTree;
         tableIns1 = table.render({
             elem: '#role_table'
