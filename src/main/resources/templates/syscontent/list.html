@@ -102,7 +102,7 @@
         base: ctx + 'static/layui-ext/'
     }).extend({
         tinymce: 'tinymce/tinymce',
-    }).use(['table', 'layer', 'laydate','upload','tinymce'], function () {
+    }).use(['tinymce'], function () {
         //建立富文本编辑器
         var tinymce = layui.tinymce
         var edit = tinymce.render({

@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
-      xmlns:th="http://www.thymeleaf.org"
->
-
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
     <title>Title</title>
     <!--公共模块-->
     <div th:replace="~{layout}"></div>
-
 </head>
 <body>
 
@@ -79,13 +75,14 @@
     var layer = layui.layer;
     var form = layui.form;
     var element = layui.element;
+    var table = layui.table;
     var treetable;
     var selectNode = {};
     layui.config({
         base: ctx + 'static/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable'
-    }).use(['treetable', 'table', 'tree'], function () {
+    }).use(['treetable', 'tree'], function () {
         var reloadTreeTable = function () {
             CoreUtil.sendGet(ctx + "sys/depts", null, function (res) {
                 renderTable(res.data);
@@ -93,7 +90,6 @@
         };
         reloadTreeTable();
         treetable = layui.treetable;
-        var table = layui.table;
         var tree = layui.tree;
         var renderTable = function (data) {
             treetable.render({
