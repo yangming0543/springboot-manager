@@ -103,7 +103,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
 * 持久层框架：[MyBatis-Plus](https://mybatis.plus)
 * 权限认证：[Sa-Token](https://sa-token.cc/doc.html#/)
-* 前端框架: [Layui](http://layui.xhcen.com/doc/doc.html)
+* 前端框架: [Layui](https://layui.dev/docs/2/)
 * 数据库连接池：[Alibaba Druid](https://github.com/alibaba/druid/)
 * 模板引擎：[Thymeleaf](https://www.thymeleaf.org/)
 * 阿里巴巴Java开发手册[最新版下载](https://github.com/alibaba/p3c)
