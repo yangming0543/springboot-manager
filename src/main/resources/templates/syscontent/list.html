@@ -61,16 +61,17 @@
 
 <div class="table_div">
     <div id="searchParam" sa:hasPermission="sysContent:list">
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <input type="text" id="title" class="layui-input" autocomplete="off" placeholder="请输入标题">
-            </div>
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="title" class="layui-input" autocomplete="off" placeholder="请输入标题">
+                </div>
 
-            <div class="layui-input-inline ">
-                <button class="layui-btn" onclick="search()">查询</button>
+                <div class="layui-input-inline ">
+                    <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                </div>
             </div>
-        </div>
-
+        </form>
     </div>
     <table class="layui-table" id="showTable" lay-filter="showTable"></table>
 </div>
@@ -92,30 +93,30 @@
 <script>
     //文章类型字典数据
     var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g, "\"");
-    var tableIns1;
-    var table = layui.table;
-    var form = layui.form;
-    var layer = layui.layer;
-    var laydate = layui.laydate;
-    var upload = layui.upload;
+
     layui.config({
         base: ctx + 'static/layui-ext/'
     }).extend({
         tinymce: 'tinymce/tinymce',
     }).use(['tinymce'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+
         //建立富文本编辑器
         var tinymce = layui.tinymce
         var edit = tinymce.render({
             elem: "#content"
             , height: 500
-            , width:'80%'
-            ,images_upload_url:ctx + 'sysFiles/upload'
-            ,form:{
-                name:'file'//配置上传文件的字段名称
+            , width: '80%'
+            , images_upload_url: ctx + 'sysFiles/upload'
+            , form: {
+                name: 'file'//配置上传文件的字段名称
             }
         });
+
         //加载table
-        tableIns1 = table.render({
+        var tableIns1 = table.render({
             elem: '#showTable'
             , contentType: 'application/json'
             , page: true //开启分页
@@ -168,7 +169,7 @@
                     $(".operation").show();
                     $(".title").html("新增");
                     form.val('info', {
-                        "id":"",
+                        "id": "",
                         "title": "",
                         "type": "0"
                     })
@@ -226,7 +227,7 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendDelete(ctx + "sysContent/delete", ids, function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
-                            search();
+                            tableIns1.reload();
                         });
                     })
                 }
@@ -251,31 +252,30 @@
                 CoreUtil.sendPost(ctx + "sysContent/add", data.field, function (res) {
                     $(".table_div").show();
                     $(".operation").hide();
-                    search();
+                    tableIns1.reload();
                 })
             } else {
                 CoreUtil.sendPut(ctx + "sysContent/update", data.field, function (res) {
                     $(".table_div").show();
                     $(".operation").hide();
-                    search();
+                    tableIns1.reload();
                 })
             }
 
             return false;
         });
 
-    });
-
-    //执行查询
-    function search() {
-        //这里以搜索为例
-        tableIns1.reload({
-            where: { //设定异步数据接口的额外参数，任意设
-                title: $("#title").val()
-            }
-            , page: {
-                curr: 1 //重新从第 1 页开始
-            }
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            tableIns1.reload({
+                page: {
+                    curr: 1
+                }
+                , where: data.field
+            });
+            return false;
         });
-    };
+
+    });
 </script>

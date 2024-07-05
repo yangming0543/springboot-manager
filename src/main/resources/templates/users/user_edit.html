@@ -43,7 +43,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="status" lay-skin="switch" title="启用|禁止"
+                <input type="checkbox" name="status" value="1" lay-skin="switch" title="启用|禁止"
                        lay-filter="switch" checked="checked" disabled="disabled">
             </div>
         </div>
@@ -92,12 +92,9 @@
 
             // 监听提交
             form.on('submit(submit)', function (data) {
-                //checkbox值
-                if ('on' === data.field.status) {
-                    data.field.status = 1;
-                } else {
-                    data.field.status = 0;
-                }
+                //checkbox值 没有选中默认0
+                data.field.status = CoreUtil.isEmptyGet(data.field.status, 0) ;
+
                 CoreUtil.sendPut(ctx + "sys/user/info", data.field, function (res) {
                     layer.msg(res.msg);
                 });

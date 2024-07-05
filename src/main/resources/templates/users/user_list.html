@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .custom-tree-item-clicked{color:#FC9003}
+        .custom-tree-item-clicked {
+            color: #FC9003
+        }
     </style>
     <!--公共模块-->
     <div th:replace="~{layout}"></div>
@@ -61,7 +63,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" title="启用|禁止"
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" title="启用|禁止"
                            lay-filter="switch" checked="checked">
                 </div>
             </div>
@@ -95,27 +97,35 @@
         <div class="layui-col-sm12 layui-col-md8 layui-col-lg10">
             <div class="user_table_div">
                 <div id="searchParam" sa:hasPermission="sys:user:list">
-                    <div class="layui-form-item">
-                        <div class="layui-input-inline">
-                            <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" class="layui-input" autocomplete="off"
+                                       placeholder="请输入账号">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="nickName" class="layui-input" autocomplete="off"
+                                       placeholder="请输用户昵称">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" readonly class="layui-input" name="createTimeBegin" id="createTimeBegin" placeholder="开始时间">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" readonly class="layui-input" name="createTimeEnd" id="createTimeEnd" placeholder="结束时间">
+                            </div>
+                            <div class="layui-input-inline layui-form">
+                                <select id="status">
+                                    <option value="">请选择账号状态</option>
+                                    <option value="1">正常</option>
+                                    <option value="0">禁用</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline ">
+                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+
+                            </div>
                         </div>
-                        <div class="layui-input-inline">
-                            <input type="text" id="nickName" class="layui-input" autocomplete="off" placeholder="请输用户昵称">
-                        </div>
-                        <div class="layui-input-inline">
-                            <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
-                        </div>
-                        <div class="layui-input-inline layui-form">
-                            <select id="status">
-                                <option value="">请选择账号状态</option>
-                                <option value="1">正常</option>
-                                <option value="0">禁用</option>
-                            </select>
-                        </div>
-                        <div class="layui-input-inline ">
-                            <button class="layui-btn" onclick="search()" id="search">查询</button>
-                        </div>
-                    </div>
+                    </form>
 
                 </div>
                 <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
@@ -141,20 +151,21 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:user:deleted">删除</a>
 </script>
 <script>
-    var tableIns1;
-    var table = layui.table;
-    var form = layui.form;
-    var layer = layui.layer;
-    var laydate = layui.laydate;
-    var tree = layui.tree;
-    var transfer = layui.transfer;
-    var deptNo = null;
-    var startTime = null;
-    var endTime = null;
+
     layui.use(function () {
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+        var tree = layui.tree;
+        var transfer = layui.transfer;
+
+        var deptNo = null;
+
+
         initLeftTree();
         //加载table
-        tableIns1 = table.render({
+        var tableIns1 = table.render({
             elem: '#user_table'
             , contentType: 'application/json'
             , page: true //开启分页
@@ -208,20 +219,15 @@
             , toolbar: '#toolbar'
         });
 
+        //日期范围
         laydate.render({
-            elem: '#createTime'
+            elem: '#createTimeBegin'
             , type: 'datetime'
-            , range: '~'
-            , done: function (value, date, endDate) {
-                if (value != null && value != undefined && value != "") {
-                    startTime = value.split("~")[0];
-                    endTime = value.split("~")[1];
-                } else {
-                    startTime = null;
-                    endTime = null;
-                }
-
-            }
+        });
+        //日期范围
+        laydate.render({
+            elem: '#createTimeEnd'
+            , type: 'datetime'
         });
 
         table.on('toolbar(user_table)', function (obj) {
@@ -276,7 +282,7 @@
                             area: ['500px', '400px'],
                             shade: 0,
                             shadeClose: false,
-                            content: jQuery("#roles"),
+                            content: $("#roles"),
                             btn: ['确定', '取消'],
                             yes: function (index) {
                                 //获得右侧数据
@@ -292,7 +298,7 @@
                                 }
                                 CoreUtil.sendPut(ctx + "sys/user/roles/" + data.id, roleIds, function (res) {
                                     layer.msg(res.msg);
-                                    search()
+                                    tableIns1.reload();
                                 });
 
                                 layer.close(index);
@@ -316,32 +322,29 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendDelete(ctx + "sys/user", userIds, function (res) {
                         layer.msg(res.msg);
-                        search()
+                        tableIns1.reload();
                     });
                 }
             });
         };
 
         form.on('submit(submit)', function (data) {
-            //checkbox值
-            if ('on' === data.field.status) {
-                data.field.status = 1;
-            } else {
-                data.field.status = 0;
-            }
+            //checkbox值 没有选中默认0
+            data.field.status = CoreUtil.isEmptyGet(data.field.status, 0);
+
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/user", data.field, function (res) {
                     $(".user_table_div").show();
                     $("#leftTree").show();
                     $(".operation_user").hide();
-                    search()
+                    tableIns1.reload()
                 });
             } else {
                 CoreUtil.sendPut(ctx + "sys/user", data.field, function (res) {
                     $(".user_table_div").show();
                     $("#leftTree").show();
                     $(".operation_user").hide();
-                    search()
+                    tableIns1.reload()
                 });
             }
             return false;
@@ -368,7 +371,7 @@
                     deptNo = obj.data.deptNo;
                     $("#leftTree span").removeClass('custom-tree-item-clicked');     //清除旧的样式
                     $("#leftTree span:contains(" + obj.data.title + ")").addClass('custom-tree-item-clicked');
-                    search()
+                    tableIns1.reload()
 
                 }
             });
@@ -429,12 +432,13 @@
             form.render(); // 更新全部
         }
 
-        function initLeftTree(){
+        function initLeftTree() {
             CoreUtil.sendGet(ctx + "sys/dept/tree", null, function (res) {
                 loadLeftTree(res.data);
                 loadDeptTree(res.data);
             });
         }
+
         var initTransfer = function (data) {
             transfer.render({
                 elem: '#roles'
@@ -451,24 +455,18 @@
                 }
             })
         }
-    });
 
-    //执行查询
-    function search() {
-        //这里以搜索为例
-        tableIns1.reload({
-            where: { //设定异步数据接口的额外参数，任意设
-                username: $("#username").val(),
-                startTime: startTime,
-                endTime: endTime,
-                nickName: $("#nickName").val(),
-                status: $("#status").val(),
-                deptNo: deptNo
-            }
-            , page: {
-                curr: 1 //重新从第 1 页开始
-            }
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            tableIns1.reload({
+                page: {
+                    curr: 1
+                }
+                , where: data.field
+            });
+            return false;
         });
-    };
+    });
 </script>
 </html>

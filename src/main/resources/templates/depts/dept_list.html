@@ -45,7 +45,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -72,17 +72,19 @@
     <a sa:hasPermission="sys:dept:deleted" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
-    var layer = layui.layer;
-    var form = layui.form;
-    var element = layui.element;
-    var table = layui.table;
-    var treetable;
-    var selectNode = {};
+
     layui.config({
         base: ctx + 'static/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable'
     }).use(['treetable', 'tree'], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var treetable;
+        var selectNode = {};
+
+
         var reloadTreeTable = function () {
             CoreUtil.sendGet(ctx + "sys/depts", null, function (res) {
                 renderTable(res.data);
@@ -229,12 +231,9 @@
             });
         });
         form.on('submit(submit)', function (data) {
-            //checkbox值
-            if ('on' === data.field.status) {
-                data.field.status = 1;
-            } else {
-                data.field.status = 0;
-            }
+            //checkbox值 没有选中默认0
+            data.field.status = CoreUtil.isEmptyGet(data.field.status, 0) ;
+
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/dept", data.field, function (res) {
                     reloadTreeTable();

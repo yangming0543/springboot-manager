@@ -68,14 +68,15 @@
             <div class="layui-form-item">
                 <div class="layui-form-label">排序码</div>
                 <div class="layui-input-block">
-                    <input type="text" name="orderNum" lay-verify="number" onkeyup="value=zhzs(this.value)"
-                           placeholder="请输入排序码" autocomplete="off" class="layui-input">
+                    <input type="text" name="orderNum" lay-verify="number" placeholder="请输入排序码" autocomplete="off"
+                           class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" lay-filter="switch" title="启用|禁用"
+                           checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -102,19 +103,21 @@
        sa:hasPermission="sys:permission:deleted">删除</a>
 </script>
 <script th:inline="none">
-    var layer = layui.layer;
-    var form = layui.form;
-    var element = layui.element;
-    var table = layui.table;
-    var treetable;
-    var selectNode = null;
-    var iconPicker;
+
     layui.config({
         base: ctx + 'static/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable',
         iconPicker: 'icon/iconPicker'
-    }).use(['treetable', 'tree',"iconPicker"], function () {
+    }).use(['treetable', 'tree', "iconPicker"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var treetable;
+        var selectNode = null;
+        var iconPicker;
+
+
         var reloadTreeTable = function () {
             CoreUtil.sendGet(ctx + "sys/permissions", null, function (res) {
                 renderTable(res.data);
@@ -142,12 +145,14 @@
                         {type: 'numbers'},
                         {field: 'name', width: 150, title: '菜单名称'},
                         {field: 'url', width: 150, title: 'url'},
-                        {field: 'icon', width: 80, title: '图标',templet:function (item) {
-                            return '<i class="icon-color layui-icon '+item.icon+'"></i>';
-                            }},
+                        {
+                            field: 'icon', width: 80, title: '图标', templet: function (item) {
+                                return '<i class="icon-color layui-icon ' + item.icon + '"></i>';
+                            }
+                        },
                         {field: 'target', width: 80, title: 'target'},
                         {
-                            field: 'type',width: 70, title: '类型', templet: function (item) {
+                            field: 'type', width: 70, title: '类型', templet: function (item) {
                                 if (item.type === 1) {
                                     return '  <a class="layui-btn layui-btn-xs" >目录</a>';
                                 }
@@ -160,12 +165,10 @@
                             }
                         },
                         {field: 'pidName', title: '父级名称'},
-                        {field: 'orderNum', title: '排序',width: 70},
-                        {field: 'perms', title: '资源标识',width: 150},
+                        {field: 'orderNum', title: '排序', width: 70},
+                        {field: 'perms', title: '资源标识', width: 150},
                         {field: 'createTime', title: '创建时间', Width: 150},
-                        {
-                            field: 'status', title: '状态',width: 100, templet: '#checkbox_status'
-                        },
+                        {field: 'status', title: '状态', width: 100, templet: '#checkbox_status'},
                         {title: '操作', width: 180, toolbar: '#tool'}
                     ]
                 ]
@@ -187,18 +190,18 @@
                     $(".menu_icon").show();
                     form.val('info', {
                         "id": ""
-                        ,"pid": ""
-                        ,"name": ""
-                        ,"pidName": ""
-                        ,"url": ""
-                        ,"perms": ""
-                        ,"orderNum": ""
-                        ,"target": "_self"
-                        ,'status': true // 开关状态
+                        , "pid": ""
+                        , "name": ""
+                        , "pidName": ""
+                        , "url": ""
+                        , "perms": ""
+                        , "orderNum": ""
+                        , "target": "_self"
+                        , 'status': true // 开关状态
                     });
-                    $("input[name='icon']").attr("value","")
+                    $("input[name='icon']").attr("value", "")
                     iconPicker.checkIcon('iconPicker', '');
-                    if ($("#reset_icon").length === 0){
+                    if ($("#reset_icon").length === 0) {
                         $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
                     }
 
@@ -239,25 +242,25 @@
                     initRadio(data.type);
                     form.val('info', {
                         "target": data.target
-                        ,"id": data.id
-                        ,"pid": data.pid
-                        ,"name": data.name
-                        ,"pidName": data.pidName
-                        ,"url": data.url
-                        ,"perms": data.perms
-                        ,"type": data.type.toString()
-                        ,"orderNum": data.orderNum
-                        ,'status': data.status === 1 // 开关状态
+                        , "id": data.id
+                        , "pid": data.pid
+                        , "name": data.name
+                        , "pidName": data.pidName
+                        , "url": data.url
+                        , "perms": data.perms
+                        , "type": data.type.toString()
+                        , "orderNum": data.orderNum
+                        , 'status': data.status === 1 // 开关状态
                     });
                     if (!CoreUtil.isEmpty(data.icon)) {
                         iconPicker.checkIcon('iconPicker', data.icon);
                     } else {
                         iconPicker.checkIcon('iconPicker', "");
                     }
-                    if ($("#reset_icon").length === 0){
+                    if ($("#reset_icon").length === 0) {
                         $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
                     }
-                    $("input[name='icon']").attr("value",data.icon)
+                    $("input[name='icon']").attr("value", data.icon)
                     form.render(); //更新全部
                     initTree(data.id);
                     break;
@@ -317,7 +320,7 @@
                 area: ['400px', '450px'],
                 shade: 0,
                 shadeClose: false,
-                content: jQuery("#menuTree"),
+                content: $("#menuTree"),
                 btn: ['确定', '取消'],
                 yes: function (index) {
                     if (selectNode.data != null) {
@@ -331,13 +334,8 @@
         });
 
         form.on('submit(submit)', function (data) {
-            //checkbox值
-            if ('on' === data.field.status) {
-                data.field.status = 1;
-            } else {
-                data.field.status = 0;
-            }
-            console.log(data)
+            //checkbox值 没有选中默认0
+            data.field.status = CoreUtil.isEmptyGet(data.field.status, 0);
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/permission", data.field, function (res) {
                     reloadTreeTable();
@@ -359,34 +357,24 @@
                 $(".menu_target").hide();
                 $(".menu_url").hide();
                 $(".menu_icon").show();
-            } else if(data.value == '2'){
+            } else if (data.value == '2') {
                 $(".menu-perms").hide();
                 $(".menu_target").show();
                 $(".menu_url").show();
                 $(".menu_icon").show();
-            } else{
+            } else {
                 $(".menu-perms").show();
                 $(".menu_target").hide();
                 $(".menu_url").show();
                 $(".menu_icon").hide();
             }
         });
-
-
     });
 
-    function zhzs(value) {
 
-        value = value.replace(/[^\d]/g, '');
-        if ('' != value) {
-            value = parseInt(value);
-        }
-        return value;
-    }
-
-    function resetIcon(){
+    function resetIcon() {
         iconPicker.checkIcon('iconPicker', '');
-        $("input[name='icon']").attr("value","")
+        $("input[name='icon']").attr("value", "")
     }
 
 </script>
