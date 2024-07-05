@@ -175,21 +175,22 @@
             });
 
         };
+
+        //表头工具栏
         table.on('toolbar(menuTable)', function (obj) {
-            var data = obj.data;
             switch (obj.event) {
                 case 'addMenu':
                     selectNode = null;
                     $(".menu-table").hide();
                     $(".operation_menu").show();
                     $(".title").html("新增菜单权限");
-                    initRadio(1);
                     $(".menu-perms").hide();
                     $(".menu_target").hide();
                     $(".menu_url").hide();
                     $(".menu_icon").show();
                     form.val('info', {
                         "id": ""
+                        , "type": "1"
                         , "pid": ""
                         , "name": ""
                         , "pidName": ""
@@ -198,13 +199,9 @@
                         , "orderNum": ""
                         , "target": "_self"
                         , 'status': true // 开关状态
+                        , 'icon': "" // 开关状态
                     });
-                    $("input[name='icon']").attr("value", "")
                     iconPicker.checkIcon('iconPicker', '');
-                    if ($("#reset_icon").length === 0) {
-                        $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
-                    }
-
                     initTree("");
                     break;
             }
@@ -228,6 +225,7 @@
             }
         });
 
+        //行工具栏
         table.on('tool(menuTable)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
@@ -239,7 +237,6 @@
                     $(".menu-table").hide();
                     $(".operation_menu").show();
                     $(".title").html("编辑菜单权限");
-                    initRadio(data.type);
                     form.val('info', {
                         "target": data.target
                         , "id": data.id
@@ -251,21 +248,20 @@
                         , "type": data.type.toString()
                         , "orderNum": data.orderNum
                         , 'status': data.status === 1 // 开关状态
+                        , 'icon': data.icon// 开关状态
                     });
                     if (!CoreUtil.isEmpty(data.icon)) {
                         iconPicker.checkIcon('iconPicker', data.icon);
                     } else {
                         iconPicker.checkIcon('iconPicker', "");
                     }
-                    if ($("#reset_icon").length === 0) {
-                        $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
-                    }
-                    $("input[name='icon']").attr("value", data.icon)
                     form.render(); //更新全部
                     initTree(data.id);
                     break;
             }
         });
+
+        //删除测单
         var deletedMenu = function (menuId, menuName) {
             layer.open({
                 content: '确定要删除' + menuName + "?",
@@ -278,6 +274,8 @@
                 }
             });
         };
+
+        //加载树形
         var initTree = function (id) {
             var param = {permissionId: id}
             CoreUtil.sendGet(ctx + "sys/permission/tree", param, function (res) {
@@ -295,16 +293,7 @@
                 }
             });
         };
-        var initRadio = function (value) {
-            var radio = document.getElementsByName("type");
-            var radioLength = radio.length;
-            for (var i = 0; i < radioLength; i++) {
-                if (value == radio[i].value) {
-                    $(radio[i]).next().click();
-                }
 
-            }
-        };
         $("#btn_cancel").click(function () {
             $(".menu-table").show();
             $(".operation_menu").hide();
@@ -351,6 +340,7 @@
             }
             return false;
         });
+
         form.on('radio(radio-type)', function (data) {
             if (data.value == '1') {
                 $(".menu-perms").hide();
@@ -370,13 +360,6 @@
             }
         });
     });
-
-
-    function resetIcon() {
-        iconPicker.checkIcon('iconPicker', '');
-        $("input[name='icon']").attr("value", "")
-    }
-
 </script>
 </body>
 </html>
