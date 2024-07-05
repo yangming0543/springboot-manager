@@ -61,7 +61,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁止"
+                    <input type="checkbox" name="status" lay-skin="switch" title="启用|禁止"
                            lay-filter="switch" checked="checked">
                 </div>
             </div>
@@ -188,16 +188,7 @@
                     },
                     {field: 'createTime', title: '创建时间', minWidth: 120},
                     {field: 'updateTime', title: '更新时间', minWidth: 120},
-                    {
-                        field: 'status', title: '状态', width: 100, templet: function (item) {
-                            if (item.status === 1) {
-                                return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" checked disabled>';
-                            }
-                            if (item.status === 0) {
-                                return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" disabled>';
-                            }
-                        }
-                    },
+                    {field: 'status', title: '状态', width: 100, templet: '#checkbox_status'},
                     {
                         field: 'createWhere', title: '注册涞源', width: 100, templet: function (item) {
                             if (item.createWhere === 1) {
@@ -332,8 +323,12 @@
         };
 
         form.on('submit(submit)', function (data) {
-            console.log(data)
-            console.log(data.field)
+            //checkbox值
+            if ('on' === data.field.status) {
+                data.field.status = 1;
+            } else {
+                data.field.status = 0;
+            }
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/user", data.field, function (res) {
                     $(".user_table_div").show();
@@ -414,9 +409,6 @@
                 'status': true, // 开关状态
                 'sex': null
             });
-            $(".operation_user input[name=status]").val(1); // 输入框状态
-
-
             form.render(); // 更新全部
         }
 
@@ -434,21 +426,8 @@
                 'status': data.status === 1, // 开关状态
                 'sex': data.sex // 假设 data.sex 包含性别值
             });
-            // 手动设置 checkbox 的值
-            if (data.status === 1) {
-                $(".operation_user input[name=status]").prop('checked', true).val(1);
-            } else {
-                $(".operation_user input[name=status]").prop('checked', false).val(0);
-            }
-
             form.render(); // 更新全部
         }
-
-        // 监听开关状态改变
-        form.on('switch(switch)', function (data) {
-            $(".operation_user input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
-
-        });
 
         function initLeftTree(){
             CoreUtil.sendGet(ctx + "sys/dept/tree", null, function (res) {

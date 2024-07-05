@@ -32,7 +32,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" lay-text="启用|禁用" checked>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -158,14 +158,7 @@
                     {field: 'createTime', title: '创建时间', minWidth: 120},
                     {field: 'updateTime', title: '更新时间', minWidth: 120},
                     {
-                        field: 'status', title: '状态', width: 100, templet: function (item) {
-                            if (item.status === 1) {
-                                return '  <input type="checkbox" lay-skin="switch" lay-text="正常|弃用" checked disabled>';
-                            }
-                            if (item.status === 0) {
-                                return '  <input type="checkbox" lay-skin="switch" lay-text="正常|弃用" disabled>';
-                            }
-                        }
+                        field: 'status', title: '状态', width: 100, templet: '#checkbox_status'
                     },
                     {field: 'description', title: '描述', width: 300},
                     {title: '操作', width: 250, toolbar: '#tool'}
@@ -206,8 +199,6 @@
                         "description": "",
                         "status": true //开关状态
                     });
-                    $(".operation_role input[name=status]").val(1);
-
                     initTree();
                     break;
             }
@@ -246,11 +237,6 @@
                     "description": res.data.description,
                     "status": res.data.status == 1 //开关状态
                 });
-                if (res.data.status == 1) {
-                    $(".operation_role input[name=status]").val(1);
-                } else {
-                    $(".operation_role input[name=status]").val(0);
-                }
                 $(".operation_role_dataScope input[name=roleId]").val(res.data.id);
                 if (!CoreUtil.isEmpty(res.data.dataScope)) {
                     $("#dataScopeS").find('option[value="' + res.data.dataScope + '"]').prop('selected', true);
@@ -300,10 +286,6 @@
                 defaultExpandAll: true
             })
         };
-        form.on('switch(switch)', function () {
-            $(".operation_role input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
-
-        });
         $("#btn_cancel").click(function () {
             $(".role_table_div").show();
             $(".operation_role").hide();
@@ -322,6 +304,12 @@
 
         //监听提交
         form.on('submit(submit)', function (data) {
+            //checkbox值
+            if ('on' === data.field.status) {
+                data.field.status = 1;
+            } else {
+                data.field.status = 0;
+            }
             var permissionIds = [];
             var brchArrays = tree.getChecked('permissionIds');
             var params = {

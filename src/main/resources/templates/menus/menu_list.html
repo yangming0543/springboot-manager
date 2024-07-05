@@ -75,7 +75,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" lay-text="启用|禁用" checked>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -164,14 +164,7 @@
                         {field: 'perms', title: '资源标识',width: 150},
                         {field: 'createTime', title: '创建时间', Width: 150},
                         {
-                            field: 'status', title: '状态',width: 100, templet: function (item) {
-                                if (item.status === 1) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" checked disabled>';
-                                }
-                                if (item.status === 0) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" disabled>';
-                                }
-                            }
+                            field: 'status', title: '状态',width: 100, templet: '#checkbox_status'
                         },
                         {title: '操作', width: 180, toolbar: '#tool'}
                     ]
@@ -208,7 +201,6 @@
                     if ($("#reset_icon").length === 0){
                         $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
                     }
-                    $(".operation_menu input[name=status]").val(1);
 
                     initTree("");
                     break;
@@ -266,11 +258,6 @@
                         $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
                     }
                     $("input[name='icon']").attr("value",data.icon)
-                    if (data.status == 1) {
-                        $(".operation_menu input[name=status]").val(1);
-                    } else {
-                        $(".operation_menu input[name=status]").val(0);
-                    }
                     form.render(); //更新全部
                     initTree(data.id);
                     break;
@@ -305,11 +292,6 @@
                 }
             });
         };
-        form.on('switch(switch)', function () {
-            $(".operation_menu input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
-
-        });
-
         var initRadio = function (value) {
             var radio = document.getElementsByName("type");
             var radioLength = radio.length;
@@ -349,6 +331,12 @@
         });
 
         form.on('submit(submit)', function (data) {
+            //checkbox值
+            if ('on' === data.field.status) {
+                data.field.status = 1;
+            } else {
+                data.field.status = 0;
+            }
             console.log(data)
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/permission", data.field, function (res) {

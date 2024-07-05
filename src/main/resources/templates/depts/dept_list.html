@@ -45,7 +45,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" lay-text="启用|禁用" checked>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -121,16 +121,7 @@
                         {field: 'relationCode', title: '层级关系编码'},
                         {field: 'managerName', title: '部门经理'},
                         {field: 'phone', title: '部门经理联系电话'},
-                        {
-                            field: 'status', title: '状态', templet: function (item) {
-                                if (item.status === 1) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" checked disabled>';
-                                }
-                                if (item.status === 0) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" disabled>';
-                                }
-                            }
-                        },
+                        {field: 'status', title: '状态', templet:'#checkbox_status'},
                         {field: 'createTime', title: '创建时间', minWidth: 120},
                         {title: '操作', width: 250, toolbar: '#tool'}
                     ]
@@ -161,12 +152,6 @@
                         "phone": data.phone,
                         "status": data.status == 1
                     });
-
-                    if (data.status == 1) {
-                        $(".operation_dept input[name=status]").val(1);
-                    } else {
-                        $(".operation_dept input[name=status]").val(0);
-                    }
                     form.render(); //更新全部
                     initTree(data.id);
                     break;
@@ -190,7 +175,6 @@
                         "phone": "",
                         "status": true
                     });
-                    $(".operation_dept input[name=status]").val(1);
                     initTree("");
                     break;
             }
@@ -244,11 +228,13 @@
                 }
             });
         });
-        form.on('switch(switch)', function () {
-            $(".operation_dept input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
-
-        });
         form.on('submit(submit)', function (data) {
+            //checkbox值
+            if ('on' === data.field.status) {
+                data.field.status = 1;
+            } else {
+                data.field.status = 0;
+            }
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/dept", data.field, function (res) {
                     reloadTreeTable();

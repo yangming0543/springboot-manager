@@ -42,7 +42,6 @@ public class IndexController {
 
     @GetMapping("/index/users/info")
     public String userDetail(Model model) {
-        model.addAttribute("flagType", "edit");
         return "users/user_edit";
     }
 
