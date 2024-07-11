@@ -24,7 +24,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class SysRole extends BaseEntity implements Serializable {
+public class SysRole extends BasePageEntity implements Serializable {
     @TableId
     private String id;
 

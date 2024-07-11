@@ -20,7 +20,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysUser extends BaseEntity implements Serializable {
+public class SysUser extends BasePageEntity implements Serializable {
     @TableId
     private String id;
 

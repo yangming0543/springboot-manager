@@ -20,7 +20,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("sys_dict_detail")
-public class SysDictDetailEntity extends BaseEntity implements Serializable {
+public class SysDictDetailEntity extends BasePageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

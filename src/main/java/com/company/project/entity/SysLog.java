@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysLog extends BaseEntity implements Serializable {
+public class SysLog extends BasePageEntity implements Serializable {
     @TableId
     private String id;
 

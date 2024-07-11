@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_role_dept")
-public class SysRoleDeptEntity extends BaseEntity implements Serializable {
+public class SysRoleDeptEntity extends BasePageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

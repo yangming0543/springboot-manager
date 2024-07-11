@@ -20,7 +20,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("sys_files")
-public class SysFilesEntity extends BaseEntity implements Serializable {
+public class SysFilesEntity extends BasePageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
