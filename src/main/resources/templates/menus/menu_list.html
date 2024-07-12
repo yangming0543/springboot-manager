@@ -11,7 +11,7 @@
 <div class="panel panel-default operation_menu" hidden>
     <div class="panel-heading title"></div>
     <div class="layui-card-body">
-        <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
+        <form class="layui-form" action="" lay-filter="info" style="width: 700px;margin-top: 10px">
             <input name="id" hidden/>
             <input name="pid" hidden/>
             <div class="layui-form-item">
@@ -31,7 +31,7 @@
             <div class="layui-form-item">
                 <div class="layui-form-label ">所属菜单</div>
                 <div class="layui-input-block">
-                    <input type="pidName" name="pidName" placeholder="请选择所属菜单" autocomplete="off" class="layui-input"
+                    <input type="pidName" id="pidName" name="pidName" placeholder="请选择所属菜单" autocomplete="off" class="layui-input"
                            readonly="readonly" style="background:#eeeeee!important">
                 </div>
             </div>
@@ -301,7 +301,7 @@
         });
 
 
-        $(".operation_menu input[name=pidName]").click(function () {
+        $("#pidName").click(function () {
             layer.open({
                 type: 1,
                 skin: 'layui-layer-molv',
@@ -313,8 +313,11 @@
                 btn: ['确定', '取消'],
                 yes: function (index) {
                     if (selectNode.data != null) {
-                        $(".operation_menu input[name=pid]").val(selectNode.data.id);
-                        $(".operation_menu input[name=pidName]").val(selectNode.data.title);
+                        //选中回显
+                        form.val('info', {
+                            "pid": selectNode.data.id,
+                            "pidName": selectNode.data.title,
+                        });
                     }
 
                     layer.close(index);

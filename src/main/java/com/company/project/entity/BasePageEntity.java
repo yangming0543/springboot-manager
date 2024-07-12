@@ -30,14 +30,6 @@ public class BasePageEntity {
     private Integer limit;
 
     /**
-     * 数据权限：用户id
-     */
-    @JSONField(serialize = false)
-    @TableField(exist = false)
-    @JsonIgnore
-    private List<String> createIds;
-
-    /**
      * page条件
      *
      * @param <T>

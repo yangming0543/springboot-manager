@@ -24,7 +24,7 @@
             <div class="layui-form-item">
                 <div class="layui-form-label ">所属部门</div>
                 <div class="layui-input-block">
-                    <input type="pidName" name="pidName" placeholder="请选择所属部门" autocomplete="off" class="layui-input"
+                    <input type="pidName" id="pidName" name="pidName" placeholder="请选择所属部门" autocomplete="off" class="layui-input"
                            readonly="readonly" style="background:#eeeeee!important">
                 </div>
             </div>
@@ -209,7 +209,7 @@
                 }
             });
         };
-        $(".operation_dept input[name=pidName]").click(function () {
+        $("#pidName").click(function () {
             layer.open({
                 type: 1,
                 skin: 'layui-layer-molv',
@@ -222,8 +222,10 @@
                 yes: function (index) {
                     if (selectNode.data != null) {
                         //选中回显
-                        $(".operation_dept input[name=pid]").val(selectNode.data.id);
-                        $(".operation_dept input[name=pidName]").val(selectNode.data.title);
+                        form.val('info', {
+                            "pid": selectNode.data.id,
+                            "pidName": selectNode.data.title,
+                        });
                     }
 
                     layer.close(index);

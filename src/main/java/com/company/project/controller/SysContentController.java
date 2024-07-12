@@ -62,11 +62,6 @@ public class SysContentController {
         if (!StringUtils.isEmpty(sysContent.getTitle())) {
             queryWrapper.like(SysContentEntity::getTitle, sysContent.getTitle());
         }
-        //数据权限示例， 需手动添加此条件 begin
-        if (!CollectionUtils.isEmpty(sysContent.getCreateIds())) {
-            queryWrapper.in(SysContentEntity::getCreateId, sysContent.getCreateIds());
-        }
-        //数据权限示例， 需手动添加此条件 end
         return sysContentService.page(sysContent.getQueryPage(), queryWrapper);
     }
 }

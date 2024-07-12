@@ -53,41 +53,6 @@
         </form>
     </div>
 </div>
-<div class="panel panel-default operation_role_dataScope" hidden>
-    <div class="panel-heading title"></div>
-    <div class="layui-card-body">
-        <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
-            <input name="roleId" hidden/>
-            <div class="layui-form-item">
-                <label class="layui-form-label">数据范围</label>
-                <div class="layui-input-block">
-                    <input id="dataScope" name="dataScope" hidden/>
-                    <select id="dataScopeS" name="dataScopeS" lay-filter="select-datascope">
-                        <option value="">请选择</option>
-                        <option value="1">所有</option>
-                        <option value="2">自定义部门</option>
-                        <option value="3">本部门及以下部门</option>
-                        <option value="4">本部门</option>
-                        <option value="5">自己</option>
-                    </select>
-                </div>
-            </div>
-            <div id="choose-dept" hidden>
-                <div class="layui-form-item" style="margin-left: 40px;">
-                    <div class="layui-tree">
-                        <div id="deptTree"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit_datascope">保存</button>
-                    <button class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 <div class="role_table_div">
     <div id="searchParam" sa:hasPermission="sys:role:list">
         <form class="layui-form layui-form-pane" action="">
@@ -125,7 +90,6 @@
 </script>
 <script type="text/html" id="tool">
     <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sys:role:update">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="dataScope" sa:hasPermission="sys:role:bindDept">数据权限</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:role:deleted">删除</a>
 </script>
 <script>
@@ -213,15 +177,6 @@
                     $(".title").html("编辑角色");
                     getRoleDetail(data.id);
                     break;
-                case 'dataScope':
-                    $(".role_table_div").hide();
-                    //显示编辑窗口
-                    $(".operation_role").hide();
-                    $(".operation_role_dataScope").show();
-
-                    $(".title").html("数据权限");
-                    getRoleDetail(data.id);
-                    break;
             }
         });
         var getRoleDetail = function (id) {
@@ -234,20 +189,8 @@
                     "description": res.data.description,
                     "status": res.data.status == 1 //开关状态
                 });
-                $(".operation_role_dataScope input[name=roleId]").val(res.data.id);
-                if (!CoreUtil.isEmpty(res.data.dataScope)) {
-                    $("#dataScopeS").find('option[value="' + res.data.dataScope + '"]').prop('selected', true);
-                    $("#dataScope").val(res.data.dataScope)
-                    if (res.data.dataScope == "2") {
-                        $("#choose-dept").show();
-                    }
-                } else {
-                    $("#dataScopeS option:first").prop("selected", 'selected');
-                }
                 loadPermissionTree(res.data.permissionRespNodes);
-                loadDeptTree(res.data.deptRespNodes);
                 form.render(); //更新全部
-
             });
         }
         var initTree = function () {
@@ -269,34 +212,10 @@
                 }
             });
         };
-        var el;
-        var loadDeptTree = function (data) {
-            $("#deptTree").html("");
-            el = eleTree({
-                el: '#deptTree',
-                data: data,
-                highlightCurrent: true,
-                showCheckbox: true,
-                isDefaultChangePstatus: true,
-                checkStrictly: true,
-                draggable: true,
-                defaultExpandAll: true
-            })
-        };
         $("#btn_cancel").click(function () {
             $(".role_table_div").show();
             $(".operation_role").hide();
-            $(".operation_role_dataScope").hide();
             return false;
-        });
-
-        form.on('select(select-datascope)', function (data) {
-            $("#dataScope").val(data.value)
-            if (data.value == "2") {
-                $("#choose-dept").show();
-            } else {
-                $("#choose-dept").hide();
-            }
         });
 
         //监听提交
@@ -316,7 +235,6 @@
                 CoreUtil.sendPost(ctx + "sys/role", params, function (res) {
                     $(".role_table_div").show();
                     $(".operation_role").hide();
-                    $(".operation_role_dataScope").hide();
                     tableIns1.reload();
                 });
             } else {
@@ -325,42 +243,9 @@
                     $(".role_table_div").show();
                     //隐藏编辑窗口
                     $(".operation_role").hide();
-                    $(".operation_role_dataScope").hide();
                     tableIns1.reload();
                 });
             }
-
-            return false;
-        });
-
-        //监听提交
-        form.on('submit(submit_datascope)', function (data) {
-
-            if (CoreUtil.isEmpty($("#dataScope").val())) {
-                layer.msg("请选择数据范围");
-                return false;
-            }
-            var deptIds = [];
-            var brchArrays = el.getChecked();
-            if (brchArrays == undefined || brchArrays == null || !brchArrays instanceof Object) {
-                return false;
-            }
-            for (var i = 0; i < brchArrays.length; i++) {
-                deptIds.push(brchArrays[i].id);
-            }
-            var params = {
-                id: $(".operation_role_dataScope input[name=roleId]").val(),
-                dataScope: $("#dataScope").val(),
-                depts: deptIds
-            }
-            CoreUtil.sendPost(ctx + "sys/role/bindDept", params, function (res) {
-                //显示表格
-                $(".role_table_div").show();
-                //隐藏编辑窗口
-                $(".operation_role").hide();
-                $(".operation_role_dataScope").hide();
-                tableIns1.reload();
-            });
 
             return false;
         });
@@ -401,16 +286,6 @@
         return permissionIds;
     }
 
-    function getDeptIds(jsonObj, deptIds) {
-        if (jsonObj == undefined || jsonObj == null || !jsonObj instanceof Object) {
-            return null;
-        }
-        for (var i = 0; i < jsonObj.length; i++) {
-            deptIds.push(jsonObj[i].id);
-            getDeptIds(jsonObj[i].children, deptIds);
-        }
-        return deptIds;
-    }
 
 </script>
 </html>
