@@ -5,9 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * BaseEntity
@@ -17,16 +16,14 @@ import java.util.List;
  * @date 2020年3月18日
  */
 @Data
-@JsonIgnoreProperties(value = {"page", "limit", "getQueryPage"})
+@JsonIgnoreProperties(value = { "getQueryPage"})
 public class BasePageEntity {
-    @JSONField(serialize = false)
     @TableField(exist = false)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer page;
 
-    @JSONField(serialize = false)
     @TableField(exist = false)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
 
     /**
