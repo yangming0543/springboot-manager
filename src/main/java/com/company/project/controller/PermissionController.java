@@ -5,6 +5,7 @@ import cn.dev33.satoken.annotation.SaMode;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.entity.SysPermission;
 import com.company.project.service.PermissionService;
 import com.company.project.vo.resp.PermissionRespNode;
@@ -54,9 +55,7 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "更新菜单权限")
     @SaCheckPermission("sys:permission:update")
     public void updatePermission(@RequestBody @Valid SysPermission vo) {
-        if (StringUtils.isEmpty(vo.getId())) {
-            throw new BusinessException("id不能为空");
-        }
+        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
         SysPermission sysPermission = permissionService.getById(vo.getId());
         if (null == sysPermission) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);

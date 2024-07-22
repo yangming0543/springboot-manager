@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.entity.SysContentEntity;
 import com.company.project.service.SysContentService;
 import io.swagger.annotations.Api;
@@ -50,6 +51,7 @@ public class SysContentController {
     @PutMapping("/update")
     @SaCheckPermission("sysContent:update")
     public void update(@RequestBody SysContentEntity sysContent) {
+        AssertUtil.isStringBlankMsg(sysContent.getId(), "id不能为空");
         sysContentService.updateById(sysContent);
     }
 

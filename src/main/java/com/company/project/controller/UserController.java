@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysUser;
 import com.company.project.entity.SysUserRole;
@@ -108,9 +109,7 @@ public class UserController {
     @LogAnnotation(title = "用户管理", action = "更新用户信息")
     @SaCheckPermission("sys:user:update")
     public void updateUserInfo(@RequestBody SysUser vo) {
-        if (StringUtils.isEmpty(vo.getId())) {
-            throw new BusinessException("id不能为空");
-        }
+        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
 
         userService.updateUserInfo(vo);
     }

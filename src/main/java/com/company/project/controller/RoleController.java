@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.BusinessException;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.entity.SysRole;
 import com.company.project.entity.SysRoleDeptEntity;
 import com.company.project.service.RolePermissionService;
@@ -63,9 +64,7 @@ public class RoleController {
     @LogAnnotation(title = "角色管理", action = "更新角色信息")
     @SaCheckPermission("sys:role:update")
     public void updateDept(@RequestBody SysRole vo) {
-        if (StringUtils.isEmpty(vo.getId())) {
-            throw new BusinessException("id不能为空");
-        }
+        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
         roleService.updateRole(vo);
     }
 
@@ -74,12 +73,8 @@ public class RoleController {
     @LogAnnotation(title = "角色管理", action = "绑定角色部门信息")
     @SaCheckPermission("sys:role:bindDept")
     public void bindDept(@RequestBody SysRole vo) {
-        if (StringUtils.isEmpty(vo.getId())) {
-            throw new BusinessException("id不能为空");
-        }
-        if (roleService.getById(vo.getId()) == null) {
-            throw new BusinessException("获取角色失败");
-        }
+        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
+        AssertUtil.isTrueServiceInvoke(vo.getId() != null, "获取角色失败");
 
         //先删除所有绑定
         sysRoleDeptService.remove(Wrappers.<SysRoleDeptEntity>lambdaQuery().eq(SysRoleDeptEntity::getRoleId, vo.getId()));

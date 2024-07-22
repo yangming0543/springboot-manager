@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.exception.BusinessException;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.service.SysDictDetailService;
 import io.swagger.annotations.Api;
@@ -36,16 +37,12 @@ public class SysDictDetailController {
     @PostMapping("/add")
     @SaCheckPermission("sysDict:add")
     public void add(@RequestBody SysDictDetailEntity sysDictDetail) {
-        if (StringUtils.isEmpty(sysDictDetail.getValue())) {
-            throw new BusinessException("字典值不能为空");
-        }
+        AssertUtil.isStringBlankMsg(sysDictDetail.getValue(), "字典值不能为空");
         LambdaQueryWrapper<SysDictDetailEntity> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(SysDictDetailEntity::getValue, sysDictDetail.getValue());
         queryWrapper.eq(SysDictDetailEntity::getDictId, sysDictDetail.getDictId());
         SysDictDetailEntity q = sysDictDetailService.getOne(queryWrapper);
-        if (q != null) {
-            throw new BusinessException("字典名称-字典值已存在");
-        }
+        AssertUtil.isTrueServiceInvoke(q == null, "字典名称-字典值已存在");
         sysDictDetailService.save(sysDictDetail);
     }
 
@@ -60,16 +57,11 @@ public class SysDictDetailController {
     @PutMapping("/update")
     @SaCheckPermission("sysDict:update")
     public void update(@RequestBody SysDictDetailEntity sysDictDetail) {
-        if (StringUtils.isEmpty(sysDictDetail.getValue())) {
-            throw new BusinessException("字典值不能为空");
-        }
+        AssertUtil.isStringBlankMsg(sysDictDetail.getValue(), "字典值不能为空");
         LambdaQueryWrapper<SysDictDetailEntity> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(SysDictDetailEntity::getValue, sysDictDetail.getValue());
         queryWrapper.eq(SysDictDetailEntity::getDictId, sysDictDetail.getDictId());
         SysDictDetailEntity q = sysDictDetailService.getOne(queryWrapper);
-        if (q != null && !q.getId().equals(sysDictDetail.getId())) {
-            throw new BusinessException("字典名称-字典值已存在");
-        }
 
         sysDictDetailService.updateById(sysDictDetail);
     }

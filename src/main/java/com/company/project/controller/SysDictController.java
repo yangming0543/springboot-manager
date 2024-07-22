@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.exception.BusinessException;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.entity.SysDictEntity;
 import com.company.project.service.SysDictDetailService;
@@ -40,13 +41,9 @@ public class SysDictController {
     @PostMapping("/add")
     @SaCheckPermission("sysDict:add")
     public void add(@RequestBody SysDictEntity sysDict) {
-        if (StringUtils.isEmpty(sysDict.getName())) {
-            throw new BusinessException("字典名称不能为空");
-        }
+        AssertUtil.isStringBlankMsg(sysDict.getName(), "字典名称不能为空");
         SysDictEntity q = sysDictService.getOne(Wrappers.<SysDictEntity>lambdaQuery().eq(SysDictEntity::getName, sysDict.getName()));
-        if (q != null) {
-            throw new BusinessException("字典名称已存在");
-        }
+        AssertUtil.isTrueServiceInvoke(q == null, "字典名称已存在");
         sysDictService.save(sysDict);
     }
 
@@ -63,15 +60,7 @@ public class SysDictController {
     @PutMapping("/update")
     @SaCheckPermission("sysDict:update")
     public void update(@RequestBody SysDictEntity sysDict) {
-        if (StringUtils.isEmpty(sysDict.getName())) {
-            throw new BusinessException("字典名称不能为空");
-        }
-
-        SysDictEntity q = sysDictService.getOne(Wrappers.<SysDictEntity>lambdaQuery().eq(SysDictEntity::getName, sysDict.getName()));
-        if (q != null && !q.getId().equals(sysDict.getId())) {
-            throw new BusinessException("字典名称已存在");
-        }
-
+        AssertUtil.isStringBlankMsg(sysDict.getName(), "字典名称不能为空");
         sysDictService.updateById(sysDict);
     }
 

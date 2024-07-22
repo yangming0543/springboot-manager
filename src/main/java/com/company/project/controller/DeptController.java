@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.BusinessException;
+import com.company.project.common.utils.AssertUtil;
 import com.company.project.entity.SysDept;
 import com.company.project.service.DeptService;
 import com.company.project.vo.resp.DeptRespNodeVO;
@@ -51,9 +52,7 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "更新组织信息")
     @SaCheckPermission("sys:dept:update")
     public void updateDept(@RequestBody SysDept vo) {
-        if (StringUtils.isEmpty(vo.getId())) {
-            throw new BusinessException("id不能为空");
-        }
+        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
         deptService.updateDept(vo);
     }
 
