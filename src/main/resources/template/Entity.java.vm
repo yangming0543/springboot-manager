@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.company.project.entity.BasePageEntity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
-
+import java.util.Date;
 #if(${hasBigDecimal})
 #end
 import java.io.Serializable;
