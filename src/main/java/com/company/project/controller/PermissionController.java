@@ -55,7 +55,7 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "更新菜单权限")
     @SaCheckPermission("sys:permission:update")
     public void updatePermission(@RequestBody @Valid SysPermission vo) {
-        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
+        AssertUtil.isStringNotBlank(vo.getId(), "id不能为空");
         SysPermission sysPermission = permissionService.getById(vo.getId());
         if (null == sysPermission) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);

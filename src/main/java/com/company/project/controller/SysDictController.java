@@ -41,9 +41,9 @@ public class SysDictController {
     @PostMapping("/add")
     @SaCheckPermission("sysDict:add")
     public void add(@RequestBody SysDictEntity sysDict) {
-        AssertUtil.isStringBlankMsg(sysDict.getName(), "字典名称不能为空");
+        AssertUtil.isStringNotBlank(sysDict.getName(), "字典名称不能为空");
         SysDictEntity q = sysDictService.getOne(Wrappers.<SysDictEntity>lambdaQuery().eq(SysDictEntity::getName, sysDict.getName()));
-        AssertUtil.isTrueServiceInvoke(q == null, "字典名称已存在");
+        AssertUtil.isNull(q, "字典名称已存在");
         sysDictService.save(sysDict);
     }
 
@@ -60,7 +60,7 @@ public class SysDictController {
     @PutMapping("/update")
     @SaCheckPermission("sysDict:update")
     public void update(@RequestBody SysDictEntity sysDict) {
-        AssertUtil.isStringBlankMsg(sysDict.getName(), "字典名称不能为空");
+        AssertUtil.isStringNotBlank(sysDict.getName(), "字典名称不能为空");
         sysDictService.updateById(sysDict);
     }
 

@@ -109,7 +109,7 @@ public class UserController {
     @LogAnnotation(title = "用户管理", action = "更新用户信息")
     @SaCheckPermission("sys:user:update")
     public void updateUserInfo(@RequestBody SysUser vo) {
-        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
+        AssertUtil.isStringNotBlank(vo.getId(), "id不能为空");
 
         userService.updateUserInfo(vo);
     }

@@ -51,7 +51,7 @@ public class SysContentController {
     @PutMapping("/update")
     @SaCheckPermission("sysContent:update")
     public void update(@RequestBody SysContentEntity sysContent) {
-        AssertUtil.isStringBlankMsg(sysContent.getId(), "id不能为空");
+        AssertUtil.isStringNotBlank(sysContent.getId(), "id不能为空");
         sysContentService.updateById(sysContent);
     }
 

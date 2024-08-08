@@ -37,12 +37,12 @@ public class SysDictDetailController {
     @PostMapping("/add")
     @SaCheckPermission("sysDict:add")
     public void add(@RequestBody SysDictDetailEntity sysDictDetail) {
-        AssertUtil.isStringBlankMsg(sysDictDetail.getValue(), "字典值不能为空");
+        AssertUtil.isStringNotBlank(sysDictDetail.getValue(), "字典值不能为空");
         LambdaQueryWrapper<SysDictDetailEntity> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(SysDictDetailEntity::getValue, sysDictDetail.getValue());
         queryWrapper.eq(SysDictDetailEntity::getDictId, sysDictDetail.getDictId());
         SysDictDetailEntity q = sysDictDetailService.getOne(queryWrapper);
-        AssertUtil.isTrueServiceInvoke(q == null, "字典名称-字典值已存在");
+        AssertUtil.isNull(q, "字典名称-字典值已存在");
         sysDictDetailService.save(sysDictDetail);
     }
 
@@ -57,7 +57,7 @@ public class SysDictDetailController {
     @PutMapping("/update")
     @SaCheckPermission("sysDict:update")
     public void update(@RequestBody SysDictDetailEntity sysDictDetail) {
-        AssertUtil.isStringBlankMsg(sysDictDetail.getValue(), "字典值不能为空");
+        AssertUtil.isStringNotBlank(sysDictDetail.getValue(), "字典值不能为空");
         LambdaQueryWrapper<SysDictDetailEntity> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(SysDictDetailEntity::getValue, sysDictDetail.getValue());
         queryWrapper.eq(SysDictDetailEntity::getDictId, sysDictDetail.getDictId());

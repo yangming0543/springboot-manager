@@ -52,7 +52,7 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "更新组织信息")
     @SaCheckPermission("sys:dept:update")
     public void updateDept(@RequestBody SysDept vo) {
-        AssertUtil.isStringBlankMsg(vo.getId(), "id不能为空");
+        AssertUtil.isStringNotBlank(vo.getId(), "id不能为空");
         deptService.updateDept(vo);
     }
 
